@@ -20,7 +20,8 @@ class TestFullPipeline:
     def vanderpol_data(self):
         """Generate Van der Pol test data."""
         system = VanDerPol(mu=1.0)
-        t, X = system.simulate([1.0, 0.0], t_span=(0, 20), dt=0.01)
+        t = np.linspace(0, 20, 2000)
+        X = system.generate_trajectory(np.array([1.0, 0.0]), t)
         X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
         return system, t, X, X_dot
 
@@ -28,7 +29,8 @@ class TestFullPipeline:
     def lorenz_data(self):
         """Generate Lorenz test data."""
         system = Lorenz(sigma=10, rho=28, beta=8 / 3)
-        t, X = system.simulate([1.0, 1.0, 1.0], t_span=(0, 10), dt=0.01)
+        t = np.linspace(0, 10, 1000)
+        X = system.generate_trajectory(np.array([1.0, 1.0, 1.0]), t)
         X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
         return system, t, X, X_dot
 
@@ -39,8 +41,8 @@ class TestFullPipeline:
         xi, _ = sindy_stls(Theta, X_dot, threshold=0.1)
 
         # Check sparsity pattern
-        true_xi = system.true_coefficients(labels)
-        metrics = compute_structure_metrics(xi, true_xi, threshold=0.01)
+        true_xi = system.get_true_coefficients(labels)
+        metrics = compute_structure_metrics(xi, true_xi, tol=0.01)
 
         assert metrics["f1"] > 0.7, f"F1 score too low: {metrics['f1']}"
 
@@ -50,8 +52,8 @@ class TestFullPipeline:
         Theta, labels = build_library_3d(X)
         xi, _ = sindy_stls(Theta, X_dot, threshold=0.1)
 
-        true_xi = system.true_coefficients(labels)
-        metrics = compute_structure_metrics(xi, true_xi, threshold=0.01)
+        true_xi = system.get_true_coefficients(labels)
+        metrics = compute_structure_metrics(xi, true_xi, tol=0.01)
 
         assert metrics["f1"] > 0.6, f"F1 score too low: {metrics['f1']}"
 
@@ -67,7 +69,8 @@ class TestFullPipeline:
         """Test pipeline on various 2D systems."""
         system = system_class()
         x0 = np.random.randn(dim) * 0.5 + 1.0
-        t, X = system.simulate(x0, t_span=(0, 20), dt=0.01)
+        t = np.linspace(0, 20, 2000)
+        X = system.generate_trajectory(x0, t)
         X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
 
         Theta, labels = build_library_2d(X)
@@ -79,20 +82,18 @@ class TestFullPipeline:
         assert np.sum(np.abs(xi) > 0.01) > 0, "No active terms found"
 
     @pytest.mark.slow
-    def test_noisy_data_recovery(self, vanderpol_data):
+    def test_noisy_data_recovery(self):
         """Test recovery with noisy data."""
-        system, t, X, X_dot = vanderpol_data
+        system = VanDerPol(mu=1.0)
+        t = np.linspace(0, 20, 2000)
+        X = system.generate_trajectory(np.array([1.0, 0.0]), t, noise_level=0.05)
+        X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
 
-        # Add noise
-        noise_level = 0.05
-        X_noisy = X + noise_level * np.std(X) * np.random.randn(*X.shape)
-        X_dot_noisy = compute_derivatives_finite_diff(X_noisy, t[1] - t[0])
+        Theta, labels = build_library_2d(X)
+        xi, _ = sindy_stls(Theta, X_dot, threshold=0.15)
 
-        Theta, labels = build_library_2d(X_noisy)
-        xi, _ = sindy_stls(Theta, X_dot_noisy, threshold=0.15)
-
-        true_xi = system.true_coefficients(labels)
-        metrics = compute_structure_metrics(xi, true_xi, threshold=0.01)
+        true_xi = system.get_true_coefficients(labels)
+        metrics = compute_structure_metrics(xi, true_xi, tol=0.01)
 
         # Lower threshold for noisy data
         assert metrics["f1"] > 0.5, f"F1 score too low for noisy data: {metrics['f1']}"

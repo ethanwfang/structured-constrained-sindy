@@ -19,10 +19,11 @@ class TestThresholdAblation:
     def test_data(self):
         """Generate test data."""
         system = VanDerPol(mu=1.0)
-        t, X = system.simulate([1.0, 0.0], t_span=(0, 20), dt=0.01)
+        t = np.linspace(0, 20, 2000)
+        X = system.generate_trajectory(np.array([1.0, 0.0]), t)
         X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
         Theta, labels = build_library_2d(X)
-        true_xi = system.true_coefficients(labels)
+        true_xi = system.get_true_coefficients(labels)
         return Theta, X_dot, true_xi
 
     @pytest.mark.parametrize("threshold", [0.01, 0.05, 0.1, 0.2, 0.5])
@@ -62,7 +63,8 @@ class TestMethodComparison:
         from sc_sindy import sindy_ridge
 
         system = VanDerPol(mu=1.0)
-        t, X = system.simulate([1.0, 0.0], t_span=(0, 20), dt=0.01)
+        t = np.linspace(0, 20, 2000)
+        X = system.generate_trajectory(np.array([1.0, 0.0]), t)
         X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
         Theta, labels = build_library_2d(X)
 

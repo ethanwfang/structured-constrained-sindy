@@ -58,13 +58,11 @@ class TestRobustness:
         from sc_sindy import compute_derivatives_finite_diff
 
         system = VanDerPol(mu=1.0)
-        t, X = system.simulate([1.0, 0.0], t_span=(0, 20), dt=0.01)
+        t = np.linspace(0, 20, 2000)
+        X = system.generate_trajectory(np.array([1.0, 0.0]), t, noise_level=noise_level)
+        X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
 
-        # Add noise
-        X_noisy = X + noise_level * np.std(X) * np.random.randn(*X.shape)
-        X_dot = compute_derivatives_finite_diff(X_noisy, t[1] - t[0])
-
-        Theta, labels = build_library_2d(X_noisy)
+        Theta, labels = build_library_2d(X)
         xi, _ = sindy_stls(Theta, X_dot, threshold=0.1 + noise_level)
 
         # Should still find some structure
@@ -78,9 +76,8 @@ class TestRobustness:
         from sc_sindy import compute_derivatives_finite_diff
 
         system = VanDerPol(mu=1.0)
-        t_end = n_samples * 0.01
-        t, X = system.simulate([1.0, 0.0], t_span=(0, t_end), dt=0.01)
-
+        t = np.linspace(0, n_samples * 0.01, n_samples)
+        X = system.generate_trajectory(np.array([1.0, 0.0]), t)
         X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
 
         Theta, labels = build_library_2d(X)

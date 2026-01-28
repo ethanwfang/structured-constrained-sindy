@@ -36,12 +36,8 @@ def benchmark_system(
 
         # Random initial condition
         x0 = np.random.randn(dim) * 0.5 + 1.0
-        t, X = system.simulate(x0, t_span=(0, 20), dt=0.01)
-
-        # Add noise if specified
-        if noise_level > 0:
-            X = X + noise_level * np.std(X) * np.random.randn(*X.shape)
-
+        t = np.linspace(0, 20, 2000)
+        X = system.generate_trajectory(x0, t, noise_level=noise_level)
         X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
 
         # Build library
@@ -54,12 +50,12 @@ def benchmark_system(
         xi, _ = sindy_stls(Theta, X_dot, threshold=0.1)
 
         # Compute metrics
-        true_xi = system.true_coefficients(labels)
-        metrics = compute_structure_metrics(xi, true_xi, threshold=0.01)
+        true_xi = system.get_true_coefficients(labels)
+        metrics = compute_structure_metrics(xi, true_xi, tol=0.01)
         f1_scores.append(metrics["f1"])
 
         mae = compute_coefficient_error(xi, true_xi)
-        mae_scores.append(mae["mae"])
+        mae_scores.append(mae)
 
     return {
         "system": system_class.__name__,

@@ -32,7 +32,8 @@ def benchmark(func: Callable, n_runs: int = 10) -> dict:
 def benchmark_sindy_2d():
     """Benchmark SINDy on 2D systems."""
     system = VanDerPol(mu=1.0)
-    t, X = system.simulate([1.0, 0.0], t_span=(0, 20), dt=0.01)
+    t = np.linspace(0, 20, 2000)
+    X = system.generate_trajectory(np.array([1.0, 0.0]), t)
     X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
     Theta, labels = build_library_2d(X)
 
@@ -47,7 +48,8 @@ def benchmark_sindy_2d():
 def benchmark_sindy_3d():
     """Benchmark SINDy on 3D systems."""
     system = Lorenz(sigma=10, rho=28, beta=8 / 3)
-    t, X = system.simulate([1.0, 1.0, 1.0], t_span=(0, 10), dt=0.01)
+    t = np.linspace(0, 10, 1000)
+    X = system.generate_trajectory(np.array([1.0, 1.0, 1.0]), t)
     X_dot = compute_derivatives_finite_diff(X, t[1] - t[0])
     Theta, labels = build_library_3d(X)
 
