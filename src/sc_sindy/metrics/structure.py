@@ -5,14 +5,13 @@ This module provides metrics for evaluating how well SINDy algorithms
 recover the true equation structure (which terms are active).
 """
 
+from typing import Dict
+
 import numpy as np
-from typing import Dict, Tuple
 
 
 def compute_structure_metrics(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray,
-    tol: float = 1e-6
+    xi_pred: np.ndarray, xi_true: np.ndarray, tol: float = 1e-6
 ) -> Dict[str, float]:
     """
     Compute precision, recall, F1 for structure recovery.
@@ -62,23 +61,21 @@ def compute_structure_metrics(
     accuracy = (tp + tn) / total if total > 0 else 0.0
 
     return {
-        'precision': precision,
-        'recall': recall,
-        'f1': f1,
-        'accuracy': accuracy,
-        'n_active_pred': int(np.sum(pred_active)),
-        'n_active_true': int(np.sum(true_active)),
-        'true_positives': int(tp),
-        'false_positives': int(fp),
-        'false_negatives': int(fn),
-        'true_negatives': int(tn),
+        "precision": precision,
+        "recall": recall,
+        "f1": f1,
+        "accuracy": accuracy,
+        "n_active_pred": int(np.sum(pred_active)),
+        "n_active_true": int(np.sum(true_active)),
+        "true_positives": int(tp),
+        "false_positives": int(fp),
+        "false_negatives": int(fn),
+        "true_negatives": int(tn),
     }
 
 
 def compute_per_equation_metrics(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray,
-    tol: float = 1e-6
+    xi_pred: np.ndarray, xi_true: np.ndarray, tol: float = 1e-6
 ) -> Dict[str, Dict[str, float]]:
     """
     Compute structure metrics for each equation separately.
@@ -101,20 +98,14 @@ def compute_per_equation_metrics(
     results = {}
 
     for i in range(n_vars):
-        results[f'eq_{i}'] = compute_structure_metrics(
-            xi_pred[i:i+1, :],
-            xi_true[i:i+1, :],
-            tol=tol
+        results[f"eq_{i}"] = compute_structure_metrics(
+            xi_pred[i : i + 1, :], xi_true[i : i + 1, :], tol=tol
         )
 
     return results
 
 
-def structure_similarity(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray,
-    tol: float = 1e-6
-) -> float:
+def structure_similarity(xi_pred: np.ndarray, xi_true: np.ndarray, tol: float = 1e-6) -> float:
     """
     Compute Jaccard similarity between predicted and true structure.
 
@@ -161,10 +152,7 @@ def sparsity_ratio(xi: np.ndarray, tol: float = 1e-6) -> float:
 
 
 def compare_structures(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray,
-    term_names: list,
-    tol: float = 1e-6
+    xi_pred: np.ndarray, xi_true: np.ndarray, term_names: list, tol: float = 1e-6
 ) -> Dict[str, list]:
     """
     Compare predicted and true structures, identifying differences.
@@ -196,7 +184,7 @@ def compare_structures(
     spurious = []
 
     n_vars = xi_pred.shape[0]
-    var_names = [f'eq{i}' for i in range(n_vars)]
+    var_names = [f"eq{i}" for i in range(n_vars)]
 
     for i in range(n_vars):
         for j, term in enumerate(term_names):
@@ -209,7 +197,7 @@ def compare_structures(
                 spurious.append(key)
 
     return {
-        'correct': correct,
-        'missed': missed,
-        'spurious': spurious,
+        "correct": correct,
+        "missed": missed,
+        "spurious": spurious,
     }

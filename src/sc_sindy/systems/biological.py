@@ -5,8 +5,9 @@ This module provides dynamical systems from biology and biochemistry,
 including predator-prey models and metabolic oscillators.
 """
 
-import numpy as np
 from typing import List
+
+import numpy as np
 
 from .base import DynamicalSystem
 
@@ -36,18 +37,17 @@ class LotkaVolterra(DynamicalSystem):
     in phase space (conservative system).
     """
 
-    def __init__(self, alpha: float = 1.0, beta: float = 0.5,
-                 delta: float = 0.5, gamma: float = 1.0):
-        super().__init__("Lotka-Volterra", 2,
-                        {"alpha": alpha, "beta": beta, "delta": delta, "gamma": gamma})
+    def __init__(
+        self, alpha: float = 1.0, beta: float = 0.5, delta: float = 0.5, gamma: float = 1.0
+    ):
+        super().__init__(
+            "Lotka-Volterra", 2, {"alpha": alpha, "beta": beta, "delta": delta, "gamma": gamma}
+        )
 
     def derivatives(self, state: np.ndarray, t: float) -> np.ndarray:
         x, y = state
         p = self.params
-        return np.array([
-            p["alpha"] * x - p["beta"] * x * y,
-            p["delta"] * x * y - p["gamma"] * y
-        ])
+        return np.array([p["alpha"] * x - p["beta"] * x * y, p["delta"] * x * y - p["gamma"] * y])
 
     def get_true_structure(self, term_names: List[str]) -> np.ndarray:
         """
@@ -56,11 +56,11 @@ class LotkaVolterra(DynamicalSystem):
         """
         mask = np.zeros((2, len(term_names)), dtype=bool)
 
-        for term in ['x', 'xy']:
+        for term in ["x", "xy"]:
             if term in term_names:
                 mask[0, term_names.index(term)] = True
 
-        for term in ['y', 'xy']:
+        for term in ["y", "xy"]:
             if term in term_names:
                 mask[1, term_names.index(term)] = True
 
@@ -71,15 +71,15 @@ class LotkaVolterra(DynamicalSystem):
         p = self.params
         xi = np.zeros((2, len(term_names)))
 
-        if 'x' in term_names:
-            xi[0, term_names.index('x')] = p["alpha"]
-        if 'xy' in term_names:
-            xi[0, term_names.index('xy')] = -p["beta"]
+        if "x" in term_names:
+            xi[0, term_names.index("x")] = p["alpha"]
+        if "xy" in term_names:
+            xi[0, term_names.index("xy")] = -p["beta"]
 
-        if 'y' in term_names:
-            xi[1, term_names.index('y')] = -p["gamma"]
-        if 'xy' in term_names:
-            xi[1, term_names.index('xy')] = p["delta"]
+        if "y" in term_names:
+            xi[1, term_names.index("y")] = -p["gamma"]
+        if "xy" in term_names:
+            xi[1, term_names.index("xy")] = p["delta"]
 
         return xi
 
@@ -111,10 +111,7 @@ class SelkovGlycolysis(DynamicalSystem):
     def derivatives(self, state: np.ndarray, t: float) -> np.ndarray:
         x, y = state
         p = self.params
-        return np.array([
-            -x + p["a"] * y + x**2 * y,
-            p["b"] - p["a"] * y - x**2 * y
-        ])
+        return np.array([-x + p["a"] * y + x**2 * y, p["b"] - p["a"] * y - x**2 * y])
 
     def get_true_structure(self, term_names: List[str]) -> np.ndarray:
         """
@@ -123,11 +120,11 @@ class SelkovGlycolysis(DynamicalSystem):
         """
         mask = np.zeros((2, len(term_names)), dtype=bool)
 
-        for term in ['x', 'y', 'xxy']:
+        for term in ["x", "y", "xxy"]:
             if term in term_names:
                 mask[0, term_names.index(term)] = True
 
-        for term in ['1', 'y', 'xxy']:
+        for term in ["1", "y", "xxy"]:
             if term in term_names:
                 mask[1, term_names.index(term)] = True
 
@@ -138,19 +135,19 @@ class SelkovGlycolysis(DynamicalSystem):
         p = self.params
         xi = np.zeros((2, len(term_names)))
 
-        if 'x' in term_names:
-            xi[0, term_names.index('x')] = -1.0
-        if 'y' in term_names:
-            xi[0, term_names.index('y')] = p["a"]
-        if 'xxy' in term_names:
-            xi[0, term_names.index('xxy')] = 1.0
+        if "x" in term_names:
+            xi[0, term_names.index("x")] = -1.0
+        if "y" in term_names:
+            xi[0, term_names.index("y")] = p["a"]
+        if "xxy" in term_names:
+            xi[0, term_names.index("xxy")] = 1.0
 
-        if '1' in term_names:
-            xi[1, term_names.index('1')] = p["b"]
-        if 'y' in term_names:
-            xi[1, term_names.index('y')] = -p["a"]
-        if 'xxy' in term_names:
-            xi[1, term_names.index('xxy')] = -1.0
+        if "1" in term_names:
+            xi[1, term_names.index("1")] = p["b"]
+        if "y" in term_names:
+            xi[1, term_names.index("y")] = -p["a"]
+        if "xxy" in term_names:
+            xi[1, term_names.index("xxy")] = -1.0
 
         return xi
 
@@ -182,10 +179,7 @@ class CoupledBrusselator(DynamicalSystem):
     def derivatives(self, state: np.ndarray, t: float) -> np.ndarray:
         x, y = state
         p = self.params
-        return np.array([
-            p["A"] + x**2 * y - (p["B"] + 1) * x,
-            p["B"] * x - x**2 * y
-        ])
+        return np.array([p["A"] + x**2 * y - (p["B"] + 1) * x, p["B"] * x - x**2 * y])
 
     def get_true_structure(self, term_names: List[str]) -> np.ndarray:
         """
@@ -194,11 +188,11 @@ class CoupledBrusselator(DynamicalSystem):
         """
         mask = np.zeros((2, len(term_names)), dtype=bool)
 
-        for term in ['1', 'x', 'xxy']:
+        for term in ["1", "x", "xxy"]:
             if term in term_names:
                 mask[0, term_names.index(term)] = True
 
-        for term in ['x', 'xxy']:
+        for term in ["x", "xxy"]:
             if term in term_names:
                 mask[1, term_names.index(term)] = True
 
@@ -209,17 +203,17 @@ class CoupledBrusselator(DynamicalSystem):
         p = self.params
         xi = np.zeros((2, len(term_names)))
 
-        if '1' in term_names:
-            xi[0, term_names.index('1')] = p["A"]
-        if 'x' in term_names:
-            xi[0, term_names.index('x')] = -(p["B"] + 1)
-        if 'xxy' in term_names:
-            xi[0, term_names.index('xxy')] = 1.0
+        if "1" in term_names:
+            xi[0, term_names.index("1")] = p["A"]
+        if "x" in term_names:
+            xi[0, term_names.index("x")] = -(p["B"] + 1)
+        if "xxy" in term_names:
+            xi[0, term_names.index("xxy")] = 1.0
 
-        if 'x' in term_names:
-            xi[1, term_names.index('x')] = p["B"]
-        if 'xxy' in term_names:
-            xi[1, term_names.index('xxy')] = -1.0
+        if "x" in term_names:
+            xi[1, term_names.index("x")] = p["B"]
+        if "xxy" in term_names:
+            xi[1, term_names.index("xxy")] = -1.0
 
         return xi
 
@@ -252,11 +246,7 @@ class SIRModel(DynamicalSystem):
     def derivatives(self, state: np.ndarray, t: float) -> np.ndarray:
         S, I, R = state
         p = self.params
-        return np.array([
-            -p["beta"] * S * I,
-            p["beta"] * S * I - p["gamma"] * I,
-            p["gamma"] * I
-        ])
+        return np.array([-p["beta"] * S * I, p["beta"] * S * I - p["gamma"] * I, p["gamma"] * I])
 
     def get_true_structure(self, term_names: List[str]) -> np.ndarray:
         """
@@ -267,14 +257,14 @@ class SIRModel(DynamicalSystem):
         mask = np.zeros((3, len(term_names)), dtype=bool)
 
         # Map: x=S, y=I, z=R
-        if 'xy' in term_names:
-            mask[0, term_names.index('xy')] = True  # -beta*S*I
+        if "xy" in term_names:
+            mask[0, term_names.index("xy")] = True  # -beta*S*I
 
-        for term in ['xy', 'y']:
+        for term in ["xy", "y"]:
             if term in term_names:
                 mask[1, term_names.index(term)] = True
 
-        if 'y' in term_names:
-            mask[2, term_names.index('y')] = True
+        if "y" in term_names:
+            mask[2, term_names.index("y")] = True
 
         return mask

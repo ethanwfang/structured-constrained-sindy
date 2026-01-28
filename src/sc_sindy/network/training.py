@@ -5,9 +5,10 @@ This module provides functions for training the Structure Network
 on labeled trajectory data.
 """
 
-import numpy as np
-from typing import List, Tuple, Optional, Dict, Callable
 import warnings
+from typing import Callable, Dict, List, Tuple
+
+import numpy as np
 
 from .feature_extraction import extract_trajectory_features
 
@@ -17,6 +18,7 @@ try:
     import torch.nn as nn
     import torch.optim as optim
     from torch.utils.data import DataLoader, TensorDataset
+
     TORCH_AVAILABLE = True
 except ImportError:
     TORCH_AVAILABLE = False
@@ -34,7 +36,7 @@ if TORCH_AVAILABLE:
         dropout: float = 0.2,
         val_split: float = 0.1,
         early_stopping_patience: int = 10,
-        verbose: bool = True
+        verbose: bool = True,
     ) -> Tuple[StructureNetwork, Dict]:
         """
         Train Structure Network on labeled trajectory data.
@@ -100,10 +102,7 @@ if TORCH_AVAILABLE:
 
         # Create model
         model = StructureNetwork(
-            input_dim=input_dim,
-            output_dim=output_dim,
-            hidden_dims=hidden_dims,
-            dropout=dropout
+            input_dim=input_dim, output_dim=output_dim, hidden_dims=hidden_dims, dropout=dropout
         )
 
         optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -114,8 +113,8 @@ if TORCH_AVAILABLE:
         train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
         # Training loop
-        history = {'train_loss': [], 'val_loss': []}
-        best_val_loss = float('inf')
+        history = {"train_loss": [], "val_loss": []}
+        best_val_loss = float("inf")
         patience_counter = 0
         best_state = None
 
@@ -138,8 +137,8 @@ if TORCH_AVAILABLE:
                 val_outputs = model(X_val)
                 val_loss = criterion(val_outputs, y_val).item()
 
-            history['train_loss'].append(train_loss)
-            history['val_loss'].append(val_loss)
+            history["train_loss"].append(train_loss)
+            history["val_loss"].append(val_loss)
 
             # Early stopping
             if val_loss < best_val_loss:
@@ -150,9 +149,11 @@ if TORCH_AVAILABLE:
                 patience_counter += 1
 
             if verbose and (epoch + 1) % 20 == 0:
-                print(f"Epoch {epoch+1}/{epochs}, "
-                      f"Train Loss: {train_loss:.4f}, "
-                      f"Val Loss: {val_loss:.4f}")
+                print(
+                    f"Epoch {epoch+1}/{epochs}, "
+                    f"Train Loss: {train_loss:.4f}, "
+                    f"Val Loss: {val_loss:.4f}"
+                )
 
             if patience_counter >= early_stopping_patience:
                 if verbose:
@@ -165,7 +166,6 @@ if TORCH_AVAILABLE:
 
         return model, history
 
-
     def generate_training_data(
         systems: list,
         n_trajectories_per_system: int = 50,
@@ -174,7 +174,7 @@ if TORCH_AVAILABLE:
         noise_levels: List[float] = None,
         dt: float = None,
         term_names: List[str] = None,
-        build_library_fn: Callable = None
+        build_library_fn: Callable = None,
     ) -> List[Tuple[np.ndarray, np.ndarray]]:
         """
         Generate training data from dynamical systems.
@@ -217,6 +217,7 @@ if TORCH_AVAILABLE:
             if term_names is None:
                 # Use default library
                 from ..core.library import build_library_2d
+
                 dummy_x = np.zeros((10, system.dim))
                 _, default_names = build_library_2d(dummy_x, poly_order=3)
                 current_names = default_names
@@ -260,11 +261,10 @@ if TORCH_AVAILABLE:
 
         return train_data
 
-
     def evaluate_network(
         model: StructureNetwork,
         test_data: List[Tuple[np.ndarray, np.ndarray]],
-        threshold: float = 0.5
+        threshold: float = 0.5,
     ) -> Dict:
         """
         Evaluate trained Structure Network.
@@ -305,28 +305,23 @@ if TORCH_AVAILABLE:
         f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
 
         return {
-            'accuracy': accuracy,
-            'precision': precision,
-            'recall': recall,
-            'f1': f1,
-            'true_positives': tp,
-            'false_positives': fp,
-            'false_negatives': fn,
-            'true_negatives': tn,
+            "accuracy": accuracy,
+            "precision": precision,
+            "recall": recall,
+            "f1": f1,
+            "true_positives": tp,
+            "false_positives": fp,
+            "false_negatives": fn,
+            "true_negatives": tn,
         }
 
 else:
+
     def train_structure_network(*args, **kwargs):
-        raise ImportError(
-            "PyTorch is required for training. Install with: pip install torch"
-        )
+        raise ImportError("PyTorch is required for training. Install with: pip install torch")
 
     def generate_training_data(*args, **kwargs):
-        raise ImportError(
-            "PyTorch is required. Install with: pip install torch"
-        )
+        raise ImportError("PyTorch is required. Install with: pip install torch")
 
     def evaluate_network(*args, **kwargs):
-        raise ImportError(
-            "PyTorch is required. Install with: pip install torch"
-        )
+        raise ImportError("PyTorch is required. Install with: pip install torch")

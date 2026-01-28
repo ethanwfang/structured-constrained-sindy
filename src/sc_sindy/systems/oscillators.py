@@ -5,8 +5,9 @@ This module provides various oscillator systems including Van der Pol,
 Duffing, and damped harmonic oscillators.
 """
 
-import numpy as np
 from typing import List
+
+import numpy as np
 
 from .base import DynamicalSystem
 
@@ -48,10 +49,10 @@ class VanDerPol(DynamicalSystem):
         """
         mask = np.zeros((2, len(term_names)), dtype=bool)
 
-        if 'y' in term_names:
-            mask[0, term_names.index('y')] = True
+        if "y" in term_names:
+            mask[0, term_names.index("y")] = True
 
-        for term in ['x', 'y', 'xxy']:
+        for term in ["x", "y", "xxy"]:
             if term in term_names:
                 mask[1, term_names.index(term)] = True
 
@@ -62,15 +63,15 @@ class VanDerPol(DynamicalSystem):
         mu = self.params["mu"]
         xi = np.zeros((2, len(term_names)))
 
-        if 'y' in term_names:
-            xi[0, term_names.index('y')] = 1.0
+        if "y" in term_names:
+            xi[0, term_names.index("y")] = 1.0
 
-        if 'x' in term_names:
-            xi[1, term_names.index('x')] = -1.0
-        if 'y' in term_names:
-            xi[1, term_names.index('y')] = mu
-        if 'xxy' in term_names:
-            xi[1, term_names.index('xxy')] = -mu
+        if "x" in term_names:
+            xi[1, term_names.index("x")] = -1.0
+        if "y" in term_names:
+            xi[1, term_names.index("y")] = mu
+        if "xxy" in term_names:
+            xi[1, term_names.index("xxy")] = -mu
 
         return xi
 
@@ -100,16 +101,12 @@ class DuffingOscillator(DynamicalSystem):
     """
 
     def __init__(self, alpha: float = 1.0, beta: float = 1.0, delta: float = 0.2):
-        super().__init__("Duffing Oscillator", 2,
-                        {"alpha": alpha, "beta": beta, "delta": delta})
+        super().__init__("Duffing Oscillator", 2, {"alpha": alpha, "beta": beta, "delta": delta})
 
     def derivatives(self, state: np.ndarray, t: float) -> np.ndarray:
         x, y = state
         p = self.params
-        return np.array([
-            y,
-            -p["delta"] * y - p["alpha"] * x - p["beta"] * x**3
-        ])
+        return np.array([y, -p["delta"] * y - p["alpha"] * x - p["beta"] * x**3])
 
     def get_true_structure(self, term_names: List[str]) -> np.ndarray:
         """
@@ -118,10 +115,10 @@ class DuffingOscillator(DynamicalSystem):
         """
         mask = np.zeros((2, len(term_names)), dtype=bool)
 
-        if 'y' in term_names:
-            mask[0, term_names.index('y')] = True
+        if "y" in term_names:
+            mask[0, term_names.index("y")] = True
 
-        for term in ['x', 'y', 'xxx']:
+        for term in ["x", "y", "xxx"]:
             if term in term_names:
                 mask[1, term_names.index(term)] = True
 
@@ -132,15 +129,15 @@ class DuffingOscillator(DynamicalSystem):
         p = self.params
         xi = np.zeros((2, len(term_names)))
 
-        if 'y' in term_names:
-            xi[0, term_names.index('y')] = 1.0
+        if "y" in term_names:
+            xi[0, term_names.index("y")] = 1.0
 
-        if 'x' in term_names:
-            xi[1, term_names.index('x')] = -p["alpha"]
-        if 'y' in term_names:
-            xi[1, term_names.index('y')] = -p["delta"]
-        if 'xxx' in term_names:
-            xi[1, term_names.index('xxx')] = -p["beta"]
+        if "x" in term_names:
+            xi[1, term_names.index("x")] = -p["alpha"]
+        if "y" in term_names:
+            xi[1, term_names.index("y")] = -p["delta"]
+        if "xxx" in term_names:
+            xi[1, term_names.index("xxx")] = -p["beta"]
 
         return xi
 
@@ -169,17 +166,13 @@ class DampedHarmonicOscillator(DynamicalSystem):
     - zeta > 1: Overdamped (no oscillation)
     """
 
-    def __init__(self, omega0: float = 2*np.pi, zeta: float = 0.1):
-        super().__init__("Damped Harmonic Oscillator", 2,
-                        {"omega0": omega0, "zeta": zeta})
+    def __init__(self, omega0: float = 2 * np.pi, zeta: float = 0.1):
+        super().__init__("Damped Harmonic Oscillator", 2, {"omega0": omega0, "zeta": zeta})
 
     def derivatives(self, state: np.ndarray, t: float) -> np.ndarray:
         x, y = state
         p = self.params
-        return np.array([
-            y,
-            -p["omega0"]**2 * x - 2 * p["zeta"] * p["omega0"] * y
-        ])
+        return np.array([y, -p["omega0"] ** 2 * x - 2 * p["zeta"] * p["omega0"] * y])
 
     def get_true_structure(self, term_names: List[str]) -> np.ndarray:
         """
@@ -188,10 +181,10 @@ class DampedHarmonicOscillator(DynamicalSystem):
         """
         mask = np.zeros((2, len(term_names)), dtype=bool)
 
-        if 'y' in term_names:
-            mask[0, term_names.index('y')] = True
+        if "y" in term_names:
+            mask[0, term_names.index("y")] = True
 
-        for term in ['x', 'y']:
+        for term in ["x", "y"]:
             if term in term_names:
                 mask[1, term_names.index(term)] = True
 
@@ -202,13 +195,13 @@ class DampedHarmonicOscillator(DynamicalSystem):
         p = self.params
         xi = np.zeros((2, len(term_names)))
 
-        if 'y' in term_names:
-            xi[0, term_names.index('y')] = 1.0
+        if "y" in term_names:
+            xi[0, term_names.index("y")] = 1.0
 
-        if 'x' in term_names:
-            xi[1, term_names.index('x')] = -p["omega0"]**2
-        if 'y' in term_names:
-            xi[1, term_names.index('y')] = -2 * p["zeta"] * p["omega0"]
+        if "x" in term_names:
+            xi[1, term_names.index("x")] = -p["omega0"] ** 2
+        if "y" in term_names:
+            xi[1, term_names.index("y")] = -2 * p["zeta"] * p["omega0"]
 
         return xi
 
@@ -238,19 +231,16 @@ class ForcedOscillator(DynamicalSystem):
     The library should include sin(omega*t) and cos(omega*t) terms.
     """
 
-    def __init__(self, omega0: float = 1.0, zeta: float = 0.1,
-                 A: float = 1.0, omega: float = 1.0):
-        super().__init__("Forced Oscillator", 2,
-                        {"omega0": omega0, "zeta": zeta, "A": A, "omega": omega})
+    def __init__(self, omega0: float = 1.0, zeta: float = 0.1, A: float = 1.0, omega: float = 1.0):
+        super().__init__(
+            "Forced Oscillator", 2, {"omega0": omega0, "zeta": zeta, "A": A, "omega": omega}
+        )
 
     def derivatives(self, state: np.ndarray, t: float) -> np.ndarray:
         x, y = state
         p = self.params
         forcing = p["A"] * np.sin(p["omega"] * t)
-        return np.array([
-            y,
-            -p["omega0"]**2 * x - 2 * p["zeta"] * p["omega0"] * y + forcing
-        ])
+        return np.array([y, -p["omega0"] ** 2 * x - 2 * p["zeta"] * p["omega0"] * y + forcing])
 
     def get_true_structure(self, term_names: List[str]) -> np.ndarray:
         """
@@ -259,10 +249,10 @@ class ForcedOscillator(DynamicalSystem):
         """
         mask = np.zeros((2, len(term_names)), dtype=bool)
 
-        if 'y' in term_names:
-            mask[0, term_names.index('y')] = True
+        if "y" in term_names:
+            mask[0, term_names.index("y")] = True
 
-        for term in ['x', 'y']:
+        for term in ["x", "y"]:
             if term in term_names:
                 mask[1, term_names.index(term)] = True
 

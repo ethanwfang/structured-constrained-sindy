@@ -5,14 +5,12 @@ This module provides metrics for evaluating how accurately SINDy algorithms
 recover the true coefficient values.
 """
 
+from typing import Dict
+
 import numpy as np
-from typing import Dict, Optional
 
 
-def compute_coefficient_error(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray
-) -> float:
+def compute_coefficient_error(xi_pred: np.ndarray, xi_true: np.ndarray) -> float:
     """
     Compute mean absolute error between predicted and true coefficients.
 
@@ -37,10 +35,7 @@ def compute_coefficient_error(
     return np.mean(np.abs(xi_pred - xi_true))
 
 
-def compute_coefficient_rmse(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray
-) -> float:
+def compute_coefficient_rmse(xi_pred: np.ndarray, xi_true: np.ndarray) -> float:
     """
     Compute root mean squared error between coefficients.
 
@@ -56,13 +51,11 @@ def compute_coefficient_rmse(
     rmse : float
         Root mean squared error.
     """
-    return np.sqrt(np.mean((xi_pred - xi_true)**2))
+    return np.sqrt(np.mean((xi_pred - xi_true) ** 2))
 
 
 def compute_relative_coefficient_error(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray,
-    tol: float = 1e-6
+    xi_pred: np.ndarray, xi_true: np.ndarray, tol: float = 1e-6
 ) -> float:
     """
     Compute mean relative error for non-zero true coefficients.
@@ -86,14 +79,14 @@ def compute_relative_coefficient_error(
     if not np.any(active_mask):
         return 0.0
 
-    relative_errors = np.abs(xi_pred[active_mask] - xi_true[active_mask]) / np.abs(xi_true[active_mask])
+    relative_errors = np.abs(xi_pred[active_mask] - xi_true[active_mask]) / np.abs(
+        xi_true[active_mask]
+    )
     return np.mean(relative_errors)
 
 
 def compute_active_coefficient_error(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray,
-    tol: float = 1e-6
+    xi_pred: np.ndarray, xi_true: np.ndarray, tol: float = 1e-6
 ) -> Dict[str, float]:
     """
     Compute coefficient errors only for truly active terms.
@@ -116,26 +109,23 @@ def compute_active_coefficient_error(
 
     if not np.any(active_mask):
         return {
-            'mae': 0.0,
-            'rmse': 0.0,
-            'max_error': 0.0,
-            'n_active': 0,
+            "mae": 0.0,
+            "rmse": 0.0,
+            "max_error": 0.0,
+            "n_active": 0,
         }
 
     errors = xi_pred[active_mask] - xi_true[active_mask]
 
     return {
-        'mae': np.mean(np.abs(errors)),
-        'rmse': np.sqrt(np.mean(errors**2)),
-        'max_error': np.max(np.abs(errors)),
-        'n_active': int(np.sum(active_mask)),
+        "mae": np.mean(np.abs(errors)),
+        "rmse": np.sqrt(np.mean(errors**2)),
+        "max_error": np.max(np.abs(errors)),
+        "n_active": int(np.sum(active_mask)),
     }
 
 
-def coefficient_correlation(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray
-) -> float:
+def coefficient_correlation(xi_pred: np.ndarray, xi_true: np.ndarray) -> float:
     """
     Compute Pearson correlation between predicted and true coefficients.
 
@@ -161,9 +151,7 @@ def coefficient_correlation(
 
 
 def compute_coefficient_metrics(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray,
-    tol: float = 1e-6
+    xi_pred: np.ndarray, xi_true: np.ndarray, tol: float = 1e-6
 ) -> Dict[str, float]:
     """
     Compute comprehensive coefficient accuracy metrics.
@@ -185,20 +173,17 @@ def compute_coefficient_metrics(
     active_metrics = compute_active_coefficient_error(xi_pred, xi_true, tol)
 
     return {
-        'mae': compute_coefficient_error(xi_pred, xi_true),
-        'rmse': compute_coefficient_rmse(xi_pred, xi_true),
-        'relative_error': compute_relative_coefficient_error(xi_pred, xi_true, tol),
-        'correlation': coefficient_correlation(xi_pred, xi_true),
-        'active_mae': active_metrics['mae'],
-        'active_rmse': active_metrics['rmse'],
-        'active_max_error': active_metrics['max_error'],
+        "mae": compute_coefficient_error(xi_pred, xi_true),
+        "rmse": compute_coefficient_rmse(xi_pred, xi_true),
+        "relative_error": compute_relative_coefficient_error(xi_pred, xi_true, tol),
+        "correlation": coefficient_correlation(xi_pred, xi_true),
+        "active_mae": active_metrics["mae"],
+        "active_rmse": active_metrics["rmse"],
+        "active_max_error": active_metrics["max_error"],
     }
 
 
-def per_equation_coefficient_error(
-    xi_pred: np.ndarray,
-    xi_true: np.ndarray
-) -> np.ndarray:
+def per_equation_coefficient_error(xi_pred: np.ndarray, xi_true: np.ndarray) -> np.ndarray:
     """
     Compute coefficient MAE for each equation separately.
 

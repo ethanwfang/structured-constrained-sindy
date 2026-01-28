@@ -5,10 +5,11 @@ This module provides the abstract base class that all dynamical systems
 should inherit from.
 """
 
+from abc import ABC, abstractmethod
+from typing import Dict, List
+
 import numpy as np
 from scipy.integrate import odeint
-from typing import Dict, List, Optional
-from abc import ABC, abstractmethod
 
 
 class DynamicalSystem(ABC):
@@ -79,10 +80,7 @@ class DynamicalSystem(ABC):
         raise NotImplementedError
 
     def generate_trajectory(
-        self,
-        x0: np.ndarray,
-        t: np.ndarray,
-        noise_level: float = 0.0
+        self, x0: np.ndarray, t: np.ndarray, noise_level: float = 0.0
     ) -> np.ndarray:
         """
         Generate trajectory with optional noise.

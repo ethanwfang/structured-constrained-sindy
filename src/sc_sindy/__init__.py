@@ -46,62 +46,63 @@ __author__ = "Structure-Constrained SINDy Project"
 
 # Core algorithms
 from .core import (
-    sindy_stls,
-    sindy_ridge,
-    sindy_structure_constrained,
-    sindy_structure_constrained_soft,
-    get_recommended_threshold,
+    DEFAULT_STLS_THRESHOLD,
+    DEFAULT_STRUCTURE_THRESHOLD,
     build_library_2d,
     build_library_3d,
     build_library_nd,
-    DEFAULT_STLS_THRESHOLD,
-    DEFAULT_STRUCTURE_THRESHOLD,
+    get_recommended_threshold,
+    sindy_ridge,
+    sindy_stls,
+    sindy_structure_constrained,
+    sindy_structure_constrained_soft,
 )
 
 # Derivative computation
 from .derivatives import (
+    compute_derivatives_adaptive,
     compute_derivatives_finite_diff,
     compute_derivatives_spline,
-    compute_derivatives_adaptive,
-)
-
-# Dynamical systems
-from .systems import (
-    DynamicalSystem,
-    VanDerPol,
-    DuffingOscillator,
-    DampedHarmonicOscillator,
-    LotkaVolterra,
-    SelkovGlycolysis,
-    CoupledBrusselator,
-    Lorenz,
-    Rossler,
-    get_system,
-    list_systems,
-    get_benchmark_systems,
 )
 
 # Metrics
 from .metrics import (
-    compute_structure_metrics,
     compute_coefficient_error,
     compute_reconstruction_error,
+    compute_structure_metrics,
+)
+
+# Dynamical systems
+from .systems import (
+    CoupledBrusselator,
+    DampedHarmonicOscillator,
+    DuffingOscillator,
+    DynamicalSystem,
+    Lorenz,
+    LotkaVolterra,
+    Rossler,
+    SelkovGlycolysis,
+    VanDerPol,
+    get_benchmark_systems,
+    get_system,
+    list_systems,
 )
 
 # Utilities
 from .utils import (
-    print_equations,
+    format_equation,
     load_lynx_hare_data,
+    print_equations,
 )
 
 # Network (may not be available if PyTorch is not installed)
 try:
     from .network import (
+        TORCH_AVAILABLE,
         StructureNetwork,
+        create_oracle_network_probs,
         extract_trajectory_features,
         train_structure_network,
-        create_oracle_network_probs,
-        TORCH_AVAILABLE,
     )
 except ImportError:
     TORCH_AVAILABLE = False
@@ -142,6 +143,7 @@ __all__ = [
     "compute_coefficient_error",
     "compute_reconstruction_error",
     # Utilities
+    "format_equation",
     "print_equations",
     "load_lynx_hare_data",
     # Network
@@ -150,9 +152,11 @@ __all__ = [
 
 # Conditional exports for network module
 if TORCH_AVAILABLE:
-    __all__.extend([
-        "StructureNetwork",
-        "extract_trajectory_features",
-        "train_structure_network",
-        "create_oracle_network_probs",
-    ])
+    __all__.extend(
+        [
+            "StructureNetwork",
+            "extract_trajectory_features",
+            "train_structure_network",
+            "create_oracle_network_probs",
+        ]
+    )

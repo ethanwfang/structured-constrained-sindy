@@ -6,11 +6,11 @@ that uses neural network predictions to guide sparse regression.
 """
 
 import time
+from typing import Tuple
+
 import numpy as np
-from typing import Tuple, Optional
 
 from .sindy import _stls_single
-
 
 # Default parameters based on ablation study results
 # Threshold 0.3 shows robust performance in range [0.2, 0.8]
@@ -24,7 +24,7 @@ def sindy_structure_constrained(
     network_probs: np.ndarray,
     structure_threshold: float = DEFAULT_STRUCTURE_THRESHOLD,
     stls_threshold: float = DEFAULT_STLS_THRESHOLD,
-    max_iter: int = 10
+    max_iter: int = 10,
 ) -> Tuple[np.ndarray, float]:
     """
     Structure-Constrained SINDy with two-stage approach.
@@ -111,7 +111,7 @@ def sindy_structure_constrained_soft(
     network_probs: np.ndarray,
     stls_threshold: float = DEFAULT_STLS_THRESHOLD,
     max_iter: int = 10,
-    prob_weighting: bool = True
+    prob_weighting: bool = True,
 ) -> Tuple[np.ndarray, float]:
     """
     Soft Structure-Constrained SINDy using probability weighting.

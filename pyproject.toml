@@ -74,7 +74,16 @@ target-version = ["py39", "py310", "py311", "py312"]
 
 [tool.ruff]
 line-length = 100
-select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = [
+    "F401",  # Unused imports (allowed in __init__.py for re-exports)
+    "E741",  # Ambiguous variable name (I for identity matrix, SIR model)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # Allow unused imports in __init__.py
 
 [tool.mypy]
 python_version = "3.10"

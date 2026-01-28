@@ -5,13 +5,12 @@ This module provides a registry pattern for accessing systems by name
 and utilities for working with multiple systems.
 """
 
-from typing import Dict, List, Type, Optional
+from typing import Dict, List, Optional, Type
 
 from .base import DynamicalSystem
-from .oscillators import VanDerPol, DuffingOscillator, DampedHarmonicOscillator, ForcedOscillator
-from .biological import LotkaVolterra, SelkovGlycolysis, CoupledBrusselator, SIRModel
-from .chaotic import Lorenz, Rossler, ChenSystem, DoublePendulum
-
+from .biological import CoupledBrusselator, LotkaVolterra, SelkovGlycolysis, SIRModel
+from .chaotic import ChenSystem, DoublePendulum, Lorenz, Rossler
+from .oscillators import DampedHarmonicOscillator, DuffingOscillator, ForcedOscillator, VanDerPol
 
 # Registry of all available systems
 SYSTEM_REGISTRY: Dict[str, Type[DynamicalSystem]] = {
@@ -38,8 +37,7 @@ SYSTEM_CATEGORIES = {
     "oscillators": ["vanderpol", "duffing", "damped_harmonic", "forced_oscillator"],
     "biological": ["lotka_volterra", "selkov", "brusselator", "sir"],
     "chaotic": ["lorenz", "rossler", "chen", "double_pendulum"],
-    "2d": ["vanderpol", "duffing", "damped_harmonic", "lotka_volterra",
-           "selkov", "brusselator"],
+    "2d": ["vanderpol", "duffing", "damped_harmonic", "lotka_volterra", "selkov", "brusselator"],
     "3d": ["lorenz", "rossler", "chen", "sir"],
 }
 
@@ -123,7 +121,7 @@ def get_benchmark_systems() -> List[DynamicalSystem]:
         SelkovGlycolysis(a=0.1, b=0.6),
         CoupledBrusselator(A=1.0, B=2.5),
         LotkaVolterra(alpha=1.0, beta=0.5, delta=0.5, gamma=1.0),
-        Lorenz(sigma=10.0, rho=28.0, beta=8.0/3.0),
+        Lorenz(sigma=10.0, rho=28.0, beta=8.0 / 3.0),
     ]
 
 

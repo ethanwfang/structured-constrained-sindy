@@ -5,16 +5,13 @@ This module provides smoothing spline methods for computing derivatives
 from noisy trajectory data.
 """
 
-import numpy as np
-from scipy.interpolate import UnivariateSpline, splrep, splev
 from typing import Optional, Tuple
 
+import numpy as np
+from scipy.interpolate import UnivariateSpline, splev, splrep
 
-def compute_derivatives_spline(
-    x: np.ndarray,
-    t: np.ndarray,
-    smooth: float = 0.01
-) -> np.ndarray:
+
+def compute_derivatives_spline(x: np.ndarray, t: np.ndarray, smooth: float = 0.01) -> np.ndarray:
     """
     Compute derivatives using spline interpolation.
 
@@ -51,10 +48,7 @@ def compute_derivatives_spline(
 
 
 def compute_derivatives_bspline(
-    x: np.ndarray,
-    t: np.ndarray,
-    degree: int = 3,
-    smooth: Optional[float] = None
+    x: np.ndarray, t: np.ndarray, degree: int = 3, smooth: Optional[float] = None
 ) -> np.ndarray:
     """
     Compute derivatives using B-splines.
@@ -85,9 +79,7 @@ def compute_derivatives_bspline(
 
 
 def compute_derivatives_adaptive(
-    x: np.ndarray,
-    t: np.ndarray,
-    noise_estimate: Optional[float] = None
+    x: np.ndarray, t: np.ndarray, noise_estimate: Optional[float] = None
 ) -> np.ndarray:
     """
     Compute derivatives with adaptive smoothing based on noise estimate.
@@ -130,10 +122,7 @@ def compute_derivatives_adaptive(
 
 
 def smooth_and_differentiate(
-    x: np.ndarray,
-    t: np.ndarray,
-    smooth: float = 0.01,
-    n_derivatives: int = 1
+    x: np.ndarray, t: np.ndarray, smooth: float = 0.01, n_derivatives: int = 1
 ) -> Tuple[np.ndarray, ...]:
     """
     Smooth data and compute multiple derivatives.

@@ -5,19 +5,22 @@ This module provides the neural network model that predicts which
 library terms should be active in the governing equations.
 """
 
+from typing import List
+
 import numpy as np
-from typing import List, Optional
 
 # Check for PyTorch availability
 try:
     import torch
     import torch.nn as nn
+
     TORCH_AVAILABLE = True
 except ImportError:
     TORCH_AVAILABLE = False
 
 
 if TORCH_AVAILABLE:
+
     class StructureNetwork(nn.Module):
         """
         Neural network for predicting equation structure from trajectory features.
@@ -49,7 +52,7 @@ if TORCH_AVAILABLE:
             input_dim: int,
             output_dim: int,
             hidden_dims: List[int] = None,
-            dropout: float = 0.2
+            dropout: float = 0.2,
         ):
             super().__init__()
 
@@ -112,24 +115,24 @@ if TORCH_AVAILABLE:
 
         def save(self, path: str):
             """Save model to file."""
-            torch.save({
-                'state_dict': self.state_dict(),
-                'input_dim': self.input_dim,
-                'output_dim': self.output_dim,
-            }, path)
+            torch.save(
+                {
+                    "state_dict": self.state_dict(),
+                    "input_dim": self.input_dim,
+                    "output_dim": self.output_dim,
+                },
+                path,
+            )
 
         @classmethod
-        def load(cls, path: str, **kwargs) -> 'StructureNetwork':
+        def load(cls, path: str, **kwargs) -> "StructureNetwork":
             """Load model from file."""
             checkpoint = torch.load(path, weights_only=False)
             model = cls(
-                input_dim=checkpoint['input_dim'],
-                output_dim=checkpoint['output_dim'],
-                **kwargs
+                input_dim=checkpoint["input_dim"], output_dim=checkpoint["output_dim"], **kwargs
             )
-            model.load_state_dict(checkpoint['state_dict'])
+            model.load_state_dict(checkpoint["state_dict"])
             return model
-
 
     class MultiHeadStructureNetwork(nn.Module):
         """
@@ -161,7 +164,7 @@ if TORCH_AVAILABLE:
             n_terms: int,
             hidden_dims: List[int] = None,
             head_dims: List[int] = None,
-            dropout: float = 0.2
+            dropout: float = 0.2,
         ):
             super().__init__()
 
@@ -224,8 +227,7 @@ else:
 
         def __init__(self, *args, **kwargs):
             raise ImportError(
-                "PyTorch is required for StructureNetwork. "
-                "Install with: pip install torch"
+                "PyTorch is required for StructureNetwork. " "Install with: pip install torch"
             )
 
     class MultiHeadStructureNetwork:
@@ -239,9 +241,7 @@ else:
 
 
 def create_oracle_network_probs(
-    true_structure: np.ndarray,
-    confidence: float = 0.9,
-    noise: float = 0.05
+    true_structure: np.ndarray, confidence: float = 0.9, noise: float = 0.05
 ) -> np.ndarray:
     """
     Create oracle network probabilities from true structure.

@@ -5,8 +5,9 @@ This module provides functions for displaying discovered equations
 in human-readable formats.
 """
 
-import numpy as np
 from typing import List, Optional
+
+import numpy as np
 
 
 def print_equations(
@@ -14,7 +15,7 @@ def print_equations(
     term_names: List[str],
     var_names: Optional[List[str]] = None,
     threshold: float = 1e-6,
-    precision: int = 4
+    precision: int = 4,
 ) -> None:
     """
     Print discovered equations in readable format.
@@ -41,7 +42,7 @@ def print_equations(
     n_vars = xi.shape[0]
 
     if var_names is None:
-        var_names = [chr(ord('x') + i) if i < 3 else f'x{i}' for i in range(n_vars)]
+        var_names = [chr(ord("x") + i) if i < 3 else f"x{i}" for i in range(n_vars)]
 
     print("\nDiscovered Equations:")
     print("-" * 50)
@@ -52,10 +53,7 @@ def print_equations(
 
 
 def format_equation(
-    coefficients: np.ndarray,
-    term_names: List[str],
-    threshold: float = 1e-6,
-    precision: int = 4
+    coefficients: np.ndarray, term_names: List[str], threshold: float = 1e-6, precision: int = 4
 ) -> str:
     """
     Format a single equation as a string.
@@ -80,7 +78,7 @@ def format_equation(
 
     for coef, name in zip(coefficients, term_names):
         if np.abs(coef) > threshold:
-            if name == '1':
+            if name == "1":
                 terms.append(f"{coef:.{precision}f}")
             else:
                 terms.append(f"{coef:.{precision}f}*{name}")
@@ -101,7 +99,7 @@ def equations_to_latex(
     term_names: List[str],
     var_names: Optional[List[str]] = None,
     threshold: float = 1e-6,
-    precision: int = 3
+    precision: int = 3,
 ) -> List[str]:
     """
     Convert discovered equations to LaTeX format.
@@ -135,7 +133,7 @@ def equations_to_latex(
     n_vars = xi.shape[0]
 
     if var_names is None:
-        var_names = [chr(ord('x') + i) if i < 3 else f'x_{i}' for i in range(n_vars)]
+        var_names = [chr(ord("x") + i) if i < 3 else f"x_{i}" for i in range(n_vars)]
 
     # Term name to LaTeX mapping
     latex_terms = {}
@@ -157,7 +155,7 @@ def equations_to_latex(
         for coef, name in zip(xi[i, :], term_names):
             if np.abs(coef) > threshold:
                 latex_term = latex_terms.get(name, name)
-                if name == '1':
+                if name == "1":
                     terms.append(f"{coef:.{precision}f}")
                 else:
                     if coef > 0:
@@ -203,7 +201,7 @@ def compare_equations(
     term_names: List[str],
     var_names: Optional[List[str]] = None,
     threshold: float = 1e-6,
-    precision: int = 4
+    precision: int = 4,
 ) -> None:
     """
     Print side-by-side comparison of predicted and true equations.
@@ -226,7 +224,7 @@ def compare_equations(
     n_vars = xi_pred.shape[0]
 
     if var_names is None:
-        var_names = [chr(ord('x') + i) if i < 3 else f'x{i}' for i in range(n_vars)]
+        var_names = [chr(ord("x") + i) if i < 3 else f"x{i}" for i in range(n_vars)]
 
     print("\nEquation Comparison:")
     print("=" * 80)
@@ -241,9 +239,7 @@ def compare_equations(
 
 
 def get_active_terms(
-    xi: np.ndarray,
-    term_names: List[str],
-    threshold: float = 1e-6
+    xi: np.ndarray, term_names: List[str], threshold: float = 1e-6
 ) -> List[List[str]]:
     """
     Get list of active terms for each equation.
@@ -264,7 +260,6 @@ def get_active_terms(
     """
     active_terms = []
     for i in range(xi.shape[0]):
-        terms = [name for coef, name in zip(xi[i, :], term_names)
-                 if np.abs(coef) > threshold]
+        terms = [name for coef, name in zip(xi[i, :], term_names) if np.abs(coef) > threshold]
         active_terms.append(terms)
     return active_terms

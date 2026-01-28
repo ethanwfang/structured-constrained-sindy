@@ -6,36 +6,32 @@ and benchmarking SINDy algorithms.
 """
 
 from .base import DynamicalSystem
-
-from .oscillators import (
-    VanDerPol,
-    DuffingOscillator,
-    DampedHarmonicOscillator,
-    ForcedOscillator,
-)
-
 from .biological import (
+    CoupledBrusselator,
     LotkaVolterra,
     SelkovGlycolysis,
-    CoupledBrusselator,
     SIRModel,
 )
-
 from .chaotic import (
-    Lorenz,
-    Rossler,
     ChenSystem,
     DoublePendulum,
+    Lorenz,
+    Rossler,
 )
-
+from .oscillators import (
+    DampedHarmonicOscillator,
+    DuffingOscillator,
+    ForcedOscillator,
+    VanDerPol,
+)
 from .registry import (
+    SYSTEM_CATEGORIES,
+    SYSTEM_REGISTRY,
+    get_2d_benchmark_systems,
+    get_benchmark_systems,
     get_system,
     list_systems,
-    get_benchmark_systems,
-    get_2d_benchmark_systems,
     system_info,
-    SYSTEM_REGISTRY,
-    SYSTEM_CATEGORIES,
 )
 
 __all__ = [

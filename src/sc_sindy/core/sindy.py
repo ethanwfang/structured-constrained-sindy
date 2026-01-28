@@ -6,9 +6,9 @@ which is the foundation of the SINDy method.
 """
 
 import time
-import numpy as np
-from typing import Tuple, Optional
+from typing import Tuple
 
+import numpy as np
 
 # Default STLS threshold
 DEFAULT_STLS_THRESHOLD = 0.1
@@ -19,7 +19,7 @@ def sindy_stls(
     x_dot: np.ndarray,
     threshold: float = DEFAULT_STLS_THRESHOLD,
     max_iter: int = 10,
-    normalize: bool = False
+    normalize: bool = False,
 ) -> Tuple[np.ndarray, float]:
     """
     Sequential Thresholded Least Squares (Standard SINDy).
@@ -80,12 +80,7 @@ def sindy_stls(
     return xi, time.time() - t_start
 
 
-def _stls_single(
-    Theta: np.ndarray,
-    y: np.ndarray,
-    threshold: float,
-    max_iter: int
-) -> np.ndarray:
+def _stls_single(Theta: np.ndarray, y: np.ndarray, threshold: float, max_iter: int) -> np.ndarray:
     """
     STLS for single output variable.
 
@@ -105,7 +100,6 @@ def _stls_single(
     xi : np.ndarray
         Coefficient vector with shape [n_terms].
     """
-    n = Theta.shape[1]
     xi = np.linalg.lstsq(Theta, y, rcond=None)[0]
 
     for _ in range(max_iter):
@@ -126,7 +120,7 @@ def sindy_ridge(
     x_dot: np.ndarray,
     alpha: float = 0.01,
     threshold: float = DEFAULT_STLS_THRESHOLD,
-    max_iter: int = 10
+    max_iter: int = 10,
 ) -> Tuple[np.ndarray, float]:
     """
     SINDy with ridge regression regularization.
@@ -178,11 +172,9 @@ def _ridge_stls_single(
     I: np.ndarray,
     alpha: float,
     threshold: float,
-    max_iter: int
+    max_iter: int,
 ) -> np.ndarray:
     """Ridge STLS for single output variable."""
-    n = Theta.shape[1]
-
     # Initial ridge regression
     xi = np.linalg.solve(ThetaTTheta + alpha * I, Theta.T @ y)
 

@@ -5,15 +5,13 @@ This module provides metrics for evaluating how well discovered models
 reproduce the original trajectory dynamics.
 """
 
+from typing import Callable, Dict, Optional
+
 import numpy as np
 from scipy.integrate import odeint
-from typing import Dict, Optional, Tuple, Callable
 
 
-def compute_reconstruction_error(
-    x_true: np.ndarray,
-    x_pred: np.ndarray
-) -> float:
+def compute_reconstruction_error(x_true: np.ndarray, x_pred: np.ndarray) -> float:
     """
     Compute RMSE between true and predicted trajectories.
 
@@ -35,12 +33,11 @@ def compute_reconstruction_error(
     >>> x_pred = x_true + 0.1 * np.random.randn(100, 2)
     >>> rmse = compute_reconstruction_error(x_true, x_pred)
     """
-    return np.sqrt(np.mean((x_true - x_pred)**2))
+    return np.sqrt(np.mean((x_true - x_pred) ** 2))
 
 
 def compute_derivative_reconstruction_error(
-    x_dot_true: np.ndarray,
-    x_dot_pred: np.ndarray
+    x_dot_true: np.ndarray, x_dot_pred: np.ndarray
 ) -> float:
     """
     Compute RMSE between true and predicted derivatives.
@@ -57,13 +54,10 @@ def compute_derivative_reconstruction_error(
     rmse : float
         Root mean squared error.
     """
-    return np.sqrt(np.mean((x_dot_true - x_dot_pred)**2))
+    return np.sqrt(np.mean((x_dot_true - x_dot_pred) ** 2))
 
 
-def compute_normalized_error(
-    x_true: np.ndarray,
-    x_pred: np.ndarray
-) -> float:
+def compute_normalized_error(x_true: np.ndarray, x_pred: np.ndarray) -> float:
     """
     Compute normalized RMSE (relative to data range).
 
@@ -84,10 +78,7 @@ def compute_normalized_error(
     return rmse / data_range if data_range > 0 else rmse
 
 
-def compute_r2_score(
-    x_true: np.ndarray,
-    x_pred: np.ndarray
-) -> float:
+def compute_r2_score(x_true: np.ndarray, x_pred: np.ndarray) -> float:
     """
     Compute R-squared (coefficient of determination).
 
@@ -103,17 +94,13 @@ def compute_r2_score(
     r2 : float
         R-squared value.
     """
-    ss_res = np.sum((x_true - x_pred)**2)
-    ss_tot = np.sum((x_true - np.mean(x_true))**2)
+    ss_res = np.sum((x_true - x_pred) ** 2)
+    ss_tot = np.sum((x_true - np.mean(x_true)) ** 2)
     return 1 - (ss_res / ss_tot) if ss_tot > 0 else 0.0
 
 
 def integrate_discovered_model(
-    xi: np.ndarray,
-    x0: np.ndarray,
-    t: np.ndarray,
-    build_library_fn: Callable,
-    poly_order: int = 3
+    xi: np.ndarray, x0: np.ndarray, t: np.ndarray, build_library_fn: Callable, poly_order: int = 3
 ) -> np.ndarray:
     """
     Integrate the discovered model forward in time.
@@ -136,6 +123,7 @@ def integrate_discovered_model(
     trajectory : np.ndarray
         Integrated trajectory with shape [n_times, n_vars].
     """
+
     def model_derivatives(state, t):
         x_curr = state.reshape(1, -1)
         Theta, _ = build_library_fn(x_curr, poly_order)
@@ -155,7 +143,7 @@ def compute_forward_prediction_error(
     t: np.ndarray,
     build_library_fn: Callable,
     poly_order: int = 3,
-    n_steps: Optional[int] = None
+    n_steps: Optional[int] = None,
 ) -> Dict[str, float]:
     """
     Compute error of forward prediction from discovered model.
@@ -194,17 +182,17 @@ def compute_forward_prediction_error(
     # Check for numerical issues
     if np.any(np.isnan(x_pred)) or np.any(np.isinf(x_pred)):
         return {
-            'rmse': np.inf,
-            'nrmse': np.inf,
-            'r2': -np.inf,
-            'valid': False,
+            "rmse": np.inf,
+            "nrmse": np.inf,
+            "r2": -np.inf,
+            "valid": False,
         }
 
     return {
-        'rmse': compute_reconstruction_error(x_target, x_pred),
-        'nrmse': compute_normalized_error(x_target, x_pred),
-        'r2': compute_r2_score(x_target, x_pred),
-        'valid': True,
+        "rmse": compute_reconstruction_error(x_target, x_pred),
+        "nrmse": compute_normalized_error(x_target, x_pred),
+        "r2": compute_r2_score(x_target, x_pred),
+        "valid": True,
     }
 
 
@@ -214,7 +202,7 @@ def compute_lyapunov_time_error(
     t: np.ndarray,
     build_library_fn: Callable,
     error_threshold: float = 1.0,
-    poly_order: int = 3
+    poly_order: int = 3,
 ) -> float:
     """
     Compute time until prediction error exceeds threshold (Lyapunov time proxy).
@@ -245,7 +233,7 @@ def compute_lyapunov_time_error(
     if np.any(np.isnan(x_pred)) or np.any(np.isinf(x_pred)):
         return 0.0
 
-    errors = np.sqrt(np.sum((x_true - x_pred)**2, axis=1))
+    errors = np.sqrt(np.sum((x_true - x_pred) ** 2, axis=1))
 
     exceeded = np.where(errors > error_threshold)[0]
     if len(exceeded) > 0:
@@ -255,9 +243,7 @@ def compute_lyapunov_time_error(
 
 
 def compute_reconstruction_metrics(
-    xi: np.ndarray,
-    Theta: np.ndarray,
-    x_dot_true: np.ndarray
+    xi: np.ndarray, Theta: np.ndarray, x_dot_true: np.ndarray
 ) -> Dict[str, float]:
     """
     Compute all reconstruction metrics using library matrix.
@@ -279,7 +265,7 @@ def compute_reconstruction_metrics(
     x_dot_pred = Theta @ xi.T
 
     return {
-        'derivative_rmse': compute_derivative_reconstruction_error(x_dot_true, x_dot_pred),
-        'derivative_nrmse': compute_normalized_error(x_dot_true, x_dot_pred),
-        'derivative_r2': compute_r2_score(x_dot_true, x_dot_pred),
+        "derivative_rmse": compute_derivative_reconstruction_error(x_dot_true, x_dot_pred),
+        "derivative_nrmse": compute_normalized_error(x_dot_true, x_dot_pred),
+        "derivative_r2": compute_r2_score(x_dot_true, x_dot_pred),
     }

@@ -5,16 +5,15 @@ This module provides functions to extract meaningful features from
 trajectory data for use with the Structure Network.
 """
 
+from typing import Optional
+
 import numpy as np
-from scipy.signal import welch, correlate
-from scipy.stats import skew, kurtosis
-from typing import Optional, Dict
+from scipy.signal import correlate, welch
+from scipy.stats import kurtosis, skew
 
 
 def extract_trajectory_features(
-    x: np.ndarray,
-    dt: float,
-    include_cross_features: bool = True
+    x: np.ndarray, dt: float, include_cross_features: bool = True
 ) -> np.ndarray:
     """
     Extract comprehensive features from trajectory for Structure Network.
@@ -52,18 +51,13 @@ def extract_trajectory_features(
         xi = x[:, i]
 
         # Basic statistics
-        features.extend([
-            np.mean(xi),
-            np.std(xi),
-            skew(xi),
-            kurtosis(xi)
-        ])
+        features.extend([np.mean(xi), np.std(xi), skew(xi), kurtosis(xi)])
 
         # Energy (mean squared value)
         features.append(np.mean(xi**2))
 
         # Temporal correlation (characteristic time)
-        autocorr = correlate(xi - np.mean(xi), xi - np.mean(xi), mode='same')
+        autocorr = correlate(xi - np.mean(xi), xi - np.mean(xi), mode="same")
         if autocorr.max() > 0:
             autocorr = autocorr / autocorr.max()
         features.append(np.sum(autocorr > 0.5) * dt)
@@ -72,7 +66,7 @@ def extract_trajectory_features(
         n_samples = len(xi)
         nperseg = min(256, n_samples // 4)
         if nperseg >= 4:
-            freqs, psd = welch(xi, fs=1/dt, nperseg=nperseg)
+            freqs, psd = welch(xi, fs=1 / dt, nperseg=nperseg)
             if len(psd) > 0:
                 peak_idx = np.argmax(psd)
                 features.append(freqs[peak_idx])
@@ -94,7 +88,7 @@ def extract_trajectory_features(
 
         # Cross-correlation lag
         for i in range(min(n_vars - 1, 2)):
-            cross_corr = correlate(x[:, i], x[:, i+1], mode='same')
+            cross_corr = correlate(x[:, i], x[:, i + 1], mode="same")
             if cross_corr.max() > 0:
                 cross_corr = cross_corr / cross_corr.max()
             lag = np.argmax(cross_corr) - len(cross_corr) // 2
@@ -104,9 +98,7 @@ def extract_trajectory_features(
 
 
 def extract_features_batch(
-    trajectories: list,
-    dt: float,
-    include_cross_features: bool = True
+    trajectories: list, dt: float, include_cross_features: bool = True
 ) -> np.ndarray:
     """
     Extract features from multiple trajectories.
@@ -148,30 +140,32 @@ def get_feature_names(n_vars: int, include_cross_features: bool = True) -> list:
     names : list
         List of feature names.
     """
-    var_names = [f'x{i}' for i in range(n_vars)]
+    var_names = [f"x{i}" for i in range(n_vars)]
     names = []
 
     # Per-variable features
     for var in var_names:
-        names.extend([
-            f'{var}_mean',
-            f'{var}_std',
-            f'{var}_skewness',
-            f'{var}_kurtosis',
-            f'{var}_energy',
-            f'{var}_autocorr_time',
-            f'{var}_peak_freq',
-            f'{var}_peak_psd',
-        ])
+        names.extend(
+            [
+                f"{var}_mean",
+                f"{var}_std",
+                f"{var}_skewness",
+                f"{var}_kurtosis",
+                f"{var}_energy",
+                f"{var}_autocorr_time",
+                f"{var}_peak_freq",
+                f"{var}_peak_psd",
+            ]
+        )
 
     # Cross-variable features
     if include_cross_features and n_vars >= 2:
         for i in range(n_vars):
             for j in range(i + 1, n_vars):
-                names.append(f'corr_{var_names[i]}_{var_names[j]}')
-        names.append('phase_volume')
+                names.append(f"corr_{var_names[i]}_{var_names[j]}")
+        names.append("phase_volume")
         for i in range(min(n_vars - 1, 2)):
-            names.append(f'cross_lag_{var_names[i]}_{var_names[i+1]}')
+            names.append(f"cross_lag_{var_names[i]}_{var_names[i+1]}")
 
     return names
 
@@ -207,9 +201,7 @@ def compute_feature_dimension(n_vars: int, include_cross_features: bool = True) 
 
 
 def normalize_features(
-    features: np.ndarray,
-    mean: Optional[np.ndarray] = None,
-    std: Optional[np.ndarray] = None
+    features: np.ndarray, mean: Optional[np.ndarray] = None, std: Optional[np.ndarray] = None
 ) -> tuple:
     """
     Normalize features to zero mean and unit variance.

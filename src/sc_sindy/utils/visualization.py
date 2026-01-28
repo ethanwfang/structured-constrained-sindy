@@ -5,12 +5,14 @@ This module provides functions for plotting trajectories, phase portraits,
 and comparison visualizations.
 """
 
+from typing import Dict, List, Optional, Tuple
+
 import numpy as np
-from typing import List, Optional, Tuple, Dict
 
 # Check for matplotlib availability
 try:
     import matplotlib.pyplot as plt
+
     MATPLOTLIB_AVAILABLE = True
 except ImportError:
     MATPLOTLIB_AVAILABLE = False
@@ -22,8 +24,8 @@ def plot_trajectory(
     var_names: Optional[List[str]] = None,
     title: str = "Trajectory",
     figsize: Tuple[int, int] = (12, 4),
-    show: bool = True
-) -> Optional['plt.Figure']:
+    show: bool = True,
+) -> Optional["plt.Figure"]:
     """
     Plot time series of state variables.
 
@@ -53,17 +55,17 @@ def plot_trajectory(
 
     n_vars = x.shape[1]
     if var_names is None:
-        var_names = [f'x{i}' for i in range(n_vars)]
+        var_names = [f"x{i}" for i in range(n_vars)]
 
     fig, axes = plt.subplots(1, n_vars, figsize=figsize)
     if n_vars == 1:
         axes = [axes]
 
     for i, (ax, name) in enumerate(zip(axes, var_names)):
-        ax.plot(t, x[:, i], 'b-', linewidth=1)
-        ax.set_xlabel('Time')
+        ax.plot(t, x[:, i], "b-", linewidth=1)
+        ax.set_xlabel("Time")
         ax.set_ylabel(name)
-        ax.set_title(f'{name}(t)')
+        ax.set_title(f"{name}(t)")
         ax.grid(True, alpha=0.3)
 
     plt.suptitle(title)
@@ -81,8 +83,8 @@ def plot_phase_portrait(
     var_names: Optional[List[str]] = None,
     title: str = "Phase Portrait",
     figsize: Tuple[int, int] = (8, 6),
-    show: bool = True
-) -> Optional['plt.Figure']:
+    show: bool = True,
+) -> Optional["plt.Figure"]:
     """
     Plot 2D phase portrait.
 
@@ -111,12 +113,12 @@ def plot_phase_portrait(
 
     i, j = var_indices
     if var_names is None:
-        var_names = [f'x{k}' for k in range(x.shape[1])]
+        var_names = [f"x{k}" for k in range(x.shape[1])]
 
     fig, ax = plt.subplots(figsize=figsize)
-    ax.plot(x[:, i], x[:, j], 'b-', linewidth=1, alpha=0.7)
-    ax.plot(x[0, i], x[0, j], 'go', markersize=10, label='Start')
-    ax.plot(x[-1, i], x[-1, j], 'ro', markersize=10, label='End')
+    ax.plot(x[:, i], x[:, j], "b-", linewidth=1, alpha=0.7)
+    ax.plot(x[0, i], x[0, j], "go", markersize=10, label="Start")
+    ax.plot(x[-1, i], x[-1, j], "ro", markersize=10, label="End")
     ax.set_xlabel(var_names[i])
     ax.set_ylabel(var_names[j])
     ax.set_title(title)
@@ -136,8 +138,8 @@ def plot_phase_portrait_3d(
     var_names: Optional[List[str]] = None,
     title: str = "3D Phase Portrait",
     figsize: Tuple[int, int] = (10, 8),
-    show: bool = True
-) -> Optional['plt.Figure']:
+    show: bool = True,
+) -> Optional["plt.Figure"]:
     """
     Plot 3D phase portrait.
 
@@ -164,17 +166,15 @@ def plot_phase_portrait_3d(
         print("matplotlib is required for plotting")
         return None
 
-    from mpl_toolkits.mplot3d import Axes3D
-
     i, j, k = var_indices
     if var_names is None:
-        var_names = [f'x{m}' for m in range(x.shape[1])]
+        var_names = [f"x{m}" for m in range(x.shape[1])]
 
     fig = plt.figure(figsize=figsize)
-    ax = fig.add_subplot(111, projection='3d')
-    ax.plot(x[:, i], x[:, j], x[:, k], 'b-', linewidth=0.5, alpha=0.7)
-    ax.scatter(x[0, i], x[0, j], x[0, k], c='g', s=100, label='Start')
-    ax.scatter(x[-1, i], x[-1, j], x[-1, k], c='r', s=100, label='End')
+    ax = fig.add_subplot(111, projection="3d")
+    ax.plot(x[:, i], x[:, j], x[:, k], "b-", linewidth=0.5, alpha=0.7)
+    ax.scatter(x[0, i], x[0, j], x[0, k], c="g", s=100, label="Start")
+    ax.scatter(x[-1, i], x[-1, j], x[-1, k], c="r", s=100, label="End")
     ax.set_xlabel(var_names[i])
     ax.set_ylabel(var_names[j])
     ax.set_zlabel(var_names[k])
@@ -195,8 +195,8 @@ def plot_coefficient_comparison(
     equation_idx: int = 0,
     title: str = "Coefficient Comparison",
     figsize: Tuple[int, int] = (12, 6),
-    show: bool = True
-) -> Optional['plt.Figure']:
+    show: bool = True,
+) -> Optional["plt.Figure"]:
     """
     Plot bar chart comparing predicted and true coefficients.
 
@@ -230,19 +230,17 @@ def plot_coefficient_comparison(
     x_pos = np.arange(len(term_names))
     width = 0.35
 
-    ax.bar(x_pos - width/2, xi_pred[equation_idx, :], width,
-           label='Predicted', alpha=0.7)
-    ax.bar(x_pos + width/2, xi_true[equation_idx, :], width,
-           label='True', alpha=0.7)
+    ax.bar(x_pos - width / 2, xi_pred[equation_idx, :], width, label="Predicted", alpha=0.7)
+    ax.bar(x_pos + width / 2, xi_true[equation_idx, :], width, label="True", alpha=0.7)
 
-    ax.set_xlabel('Library Terms')
-    ax.set_ylabel('Coefficient Value')
+    ax.set_xlabel("Library Terms")
+    ax.set_ylabel("Coefficient Value")
     ax.set_title(title)
     ax.set_xticks(x_pos)
-    ax.set_xticklabels(term_names, rotation=45, ha='right')
+    ax.set_xticklabels(term_names, rotation=45, ha="right")
     ax.legend()
-    ax.grid(True, alpha=0.3, axis='y')
-    ax.axhline(y=0, color='k', linestyle='-', linewidth=0.5)
+    ax.grid(True, alpha=0.3, axis="y")
+    ax.axhline(y=0, color="k", linestyle="-", linewidth=0.5)
 
     plt.tight_layout()
     if show:
@@ -253,11 +251,11 @@ def plot_coefficient_comparison(
 
 def plot_threshold_ablation(
     results: Dict,
-    metric: str = 'f1',
+    metric: str = "f1",
     title: str = "Threshold Ablation Study",
     figsize: Tuple[int, int] = (12, 8),
-    show: bool = True
-) -> Optional['plt.Figure']:
+    show: bool = True,
+) -> Optional["plt.Figure"]:
     """
     Plot threshold ablation study results.
 
@@ -297,18 +295,25 @@ def plot_threshold_ablation(
 
         for noise, color in zip(noise_levels, colors):
             data = system_data[noise]
-            thresholds = [d['threshold'] for d in data]
+            thresholds = [d["threshold"] for d in data]
             values = [d[metric] for d in data]
-            ax.plot(thresholds, values, 'o-', color=color,
-                   label=f'{noise:.0%} noise', linewidth=2, markersize=6)
+            ax.plot(
+                thresholds,
+                values,
+                "o-",
+                color=color,
+                label=f"{noise:.0%} noise",
+                linewidth=2,
+                markersize=6,
+            )
 
-        ax.set_xlabel('Threshold')
+        ax.set_xlabel("Threshold")
         ax.set_ylabel(metric.upper())
         ax.set_title(system_name)
         ax.legend()
         ax.grid(True, alpha=0.3)
 
-    plt.suptitle(title, fontsize=14, fontweight='bold')
+    plt.suptitle(title, fontsize=14, fontweight="bold")
     plt.tight_layout()
 
     if show:
@@ -323,11 +328,11 @@ def plot_reconstruction_comparison(
     x_pred_sc: np.ndarray,
     t: np.ndarray,
     var_idx: int = 0,
-    var_name: str = 'x',
+    var_name: str = "x",
     title: str = "Reconstruction Comparison",
     figsize: Tuple[int, int] = (12, 4),
-    show: bool = True
-) -> Optional['plt.Figure']:
+    show: bool = True,
+) -> Optional["plt.Figure"]:
     """
     Plot comparison of trajectory reconstructions.
 
@@ -362,13 +367,11 @@ def plot_reconstruction_comparison(
 
     fig, ax = plt.subplots(figsize=figsize)
 
-    ax.plot(t, x_true[:, var_idx], 'k-', linewidth=2, label='True', alpha=0.8)
-    ax.plot(t, x_pred_std[:, var_idx], 'b--', linewidth=1.5,
-            label='Standard SINDy', alpha=0.7)
-    ax.plot(t, x_pred_sc[:, var_idx], 'r:', linewidth=1.5,
-            label='Structure-Constrained', alpha=0.7)
+    ax.plot(t, x_true[:, var_idx], "k-", linewidth=2, label="True", alpha=0.8)
+    ax.plot(t, x_pred_std[:, var_idx], "b--", linewidth=1.5, label="Standard SINDy", alpha=0.7)
+    ax.plot(t, x_pred_sc[:, var_idx], "r:", linewidth=1.5, label="Structure-Constrained", alpha=0.7)
 
-    ax.set_xlabel('Time')
+    ax.set_xlabel("Time")
     ax.set_ylabel(var_name)
     ax.set_title(title)
     ax.legend()
@@ -386,8 +389,8 @@ def plot_metrics_comparison(
     metrics_sc: Dict,
     title: str = "Performance Comparison",
     figsize: Tuple[int, int] = (10, 6),
-    show: bool = True
-) -> Optional['plt.Figure']:
+    show: bool = True,
+) -> Optional["plt.Figure"]:
     """
     Plot comparison of metrics between methods.
 
@@ -413,7 +416,7 @@ def plot_metrics_comparison(
         return None
 
     # Select metrics to plot
-    metric_names = ['precision', 'recall', 'f1']
+    metric_names = ["precision", "recall", "f1"]
     values_std = [metrics_std.get(m, 0) for m in metric_names]
     values_sc = [metrics_sc.get(m, 0) for m in metric_names]
 
@@ -422,17 +425,15 @@ def plot_metrics_comparison(
     x_pos = np.arange(len(metric_names))
     width = 0.35
 
-    ax.bar(x_pos - width/2, values_std, width,
-           label='Standard SINDy', alpha=0.7)
-    ax.bar(x_pos + width/2, values_sc, width,
-           label='Structure-Constrained', alpha=0.7)
+    ax.bar(x_pos - width / 2, values_std, width, label="Standard SINDy", alpha=0.7)
+    ax.bar(x_pos + width / 2, values_sc, width, label="Structure-Constrained", alpha=0.7)
 
-    ax.set_ylabel('Score')
+    ax.set_ylabel("Score")
     ax.set_title(title)
     ax.set_xticks(x_pos)
     ax.set_xticklabels([m.capitalize() for m in metric_names])
     ax.legend()
-    ax.grid(True, alpha=0.3, axis='y')
+    ax.grid(True, alpha=0.3, axis="y")
     ax.set_ylim([0, 1.05])
 
     plt.tight_layout()
