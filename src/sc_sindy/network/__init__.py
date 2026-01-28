@@ -12,6 +12,7 @@ from .feature_extraction import (
     get_feature_names,
     normalize_features,
 )
+from .inference import StructurePredictor
 from .structure_network import (
     MultiHeadStructureNetwork,
     StructureNetwork,
@@ -21,6 +22,7 @@ from .training import (
     evaluate_network,
     generate_training_data,
     train_structure_network,
+    train_structure_network_with_split,
 )
 
 # Check PyTorch availability
@@ -42,8 +44,11 @@ __all__ = [
     "StructureNetwork",
     "MultiHeadStructureNetwork",
     "create_oracle_network_probs",
+    # Inference
+    "StructurePredictor",
     # Training
     "train_structure_network",
+    "train_structure_network_with_split",
     "generate_training_data",
     "evaluate_network",
     # Availability flag

@@ -100,12 +100,22 @@ try:
     from .network import (
         TORCH_AVAILABLE,
         StructureNetwork,
+        StructurePredictor,
         create_oracle_network_probs,
         extract_trajectory_features,
         train_structure_network,
+        train_structure_network_with_split,
     )
 except ImportError:
     TORCH_AVAILABLE = False
+
+# Evaluation framework (for fair evaluation without oracle)
+from .evaluation import (
+    SCSINDyEvaluator,
+    get_split,
+    TRAIN_SYSTEMS_2D,
+    TEST_SYSTEMS_2D,
+)
 
 __all__ = [
     # Version
@@ -148,6 +158,11 @@ __all__ = [
     "load_lynx_hare_data",
     # Network
     "TORCH_AVAILABLE",
+    # Evaluation
+    "SCSINDyEvaluator",
+    "get_split",
+    "TRAIN_SYSTEMS_2D",
+    "TEST_SYSTEMS_2D",
 ]
 
 # Conditional exports for network module
@@ -155,8 +170,10 @@ if TORCH_AVAILABLE:
     __all__.extend(
         [
             "StructureNetwork",
+            "StructurePredictor",
             "extract_trajectory_features",
             "train_structure_network",
+            "train_structure_network_with_split",
             "create_oracle_network_probs",
         ]
     )

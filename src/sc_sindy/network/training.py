@@ -315,6 +315,208 @@ if TORCH_AVAILABLE:
             "true_negatives": tn,
         }
 
+    def train_structure_network_with_split(
+        train_system_classes: list,
+        dimension: int,
+        n_trajectories_per_config: int = 50,
+        n_param_variations: int = 3,
+        noise_levels: List[float] = None,
+        t_span: Tuple[float, float] = (0, 50),
+        n_points: int = 5000,
+        epochs: int = 100,
+        batch_size: int = 32,
+        lr: float = 0.001,
+        hidden_dims: List[int] = None,
+        verbose: bool = True,
+    ) -> Tuple["StructureNetwork", Dict, Dict]:
+        """
+        Train structure network on specified system classes with parameter variations.
+
+        This is the recommended training function for fair evaluation, as it:
+        1. Takes system CLASSES (not instances) to allow parameter variations
+        2. Returns normalization statistics for use during inference
+        3. Provides complete training configuration for reproducibility
+
+        Parameters
+        ----------
+        train_system_classes : list
+            List of DynamicalSystem classes (NOT instances) for training.
+            Example: [VanDerPol, DuffingOscillator, LotkaVolterra]
+        dimension : int
+            State space dimension (2 or 3).
+        n_trajectories_per_config : int
+            Trajectories per system configuration (default: 50).
+        n_param_variations : int
+            Number of parameter variations per system type (default: 3).
+        noise_levels : List[float], optional
+            Noise levels to sample from (default: [0.0, 0.05, 0.10]).
+        t_span : Tuple[float, float]
+            Time span for trajectory generation (default: (0, 50)).
+        n_points : int
+            Number of time points (default: 5000).
+        epochs : int
+            Training epochs (default: 100).
+        batch_size : int
+            Batch size (default: 32).
+        lr : float
+            Learning rate (default: 0.001).
+        hidden_dims : List[int], optional
+            Hidden layer dimensions (default: [128, 64]).
+        verbose : bool
+            Print progress (default: True).
+
+        Returns
+        -------
+        model : StructureNetwork
+            Trained model.
+        history : Dict
+            Training history.
+        config : Dict
+            Training configuration including normalization stats and term names.
+
+        Examples
+        --------
+        >>> from sc_sindy.systems import VanDerPol, DuffingOscillator
+        >>> model, history, config = train_structure_network_with_split(
+        ...     [VanDerPol, DuffingOscillator],
+        ...     dimension=2,
+        ...     n_trajectories_per_config=50,
+        ... )
+        >>> # Use config to create a StructurePredictor for inference
+        >>> from sc_sindy.network import StructurePredictor
+        >>> predictor = StructurePredictor(
+        ...     model, config['n_vars'], config['n_terms'],
+        ...     config['feature_mean'], config['feature_std']
+        ... )
+        """
+        if noise_levels is None:
+            noise_levels = [0.0, 0.05, 0.10]
+
+        if hidden_dims is None:
+            hidden_dims = [128, 64]
+
+        # Get library info
+        from ..core.library import build_library_2d, build_library_3d
+
+        build_library = build_library_2d if dimension == 2 else build_library_3d
+        dummy_x = np.random.randn(10, dimension)
+        _, term_names = build_library(dummy_x, poly_order=3)
+        n_terms = len(term_names)
+
+        t = np.linspace(t_span[0], t_span[1], n_points)
+        dt = t[1] - t[0]
+
+        if verbose:
+            print(f"Generating training data from {len(train_system_classes)} system classes...")
+            print(f"  Dimension: {dimension}, Terms: {n_terms}")
+            print(f"  Param variations: {n_param_variations}")
+            print(f"  Trajectories per config: {n_trajectories_per_config}")
+
+        # Generate training data
+        train_data = []
+        n_per_system = n_trajectories_per_config // n_param_variations
+
+        for SystemClass in train_system_classes:
+            if verbose:
+                print(f"  Generating data for {SystemClass.__name__}...")
+
+            for var_idx in range(n_param_variations):
+                # Create system instance (with default params for now)
+                # Future: could add parameter variation logic here
+                system = SystemClass()
+
+                # Verify dimension matches
+                if system.dim != dimension:
+                    warnings.warn(
+                        f"Skipping {SystemClass.__name__}: dim={system.dim} != {dimension}"
+                    )
+                    continue
+
+                # Get true structure
+                true_structure = system.get_true_structure(term_names)
+                structure_flat = true_structure.flatten().astype(float)
+
+                for traj_idx in range(n_per_system):
+                    # Random initial condition
+                    x0 = np.random.randn(dimension) * 2
+
+                    # Random noise level
+                    noise = np.random.choice(noise_levels)
+
+                    try:
+                        # Generate trajectory
+                        x = system.generate_trajectory(x0, t, noise_level=noise)
+
+                        # Check for numerical issues
+                        if np.any(np.isnan(x)) or np.any(np.isinf(x)):
+                            continue
+
+                        # Trim edges
+                        trim = 100
+                        x_trim = x[trim:-trim]
+
+                        # Extract features
+                        features = extract_trajectory_features(x_trim, dt)
+
+                        # Check for numerical issues
+                        if np.any(np.isnan(features)) or np.any(np.isinf(features)):
+                            continue
+
+                        train_data.append((features, structure_flat))
+
+                    except Exception as e:
+                        if verbose:
+                            warnings.warn(f"Failed trajectory: {e}")
+                        continue
+
+        if len(train_data) == 0:
+            raise ValueError("No valid training data generated")
+
+        if verbose:
+            print(f"Generated {len(train_data)} training samples")
+
+        # Compute normalization statistics BEFORE training
+        all_features = np.array([f for f, _ in train_data])
+        feature_mean = np.mean(all_features, axis=0)
+        feature_std = np.std(all_features, axis=0)
+        feature_std = np.where(feature_std < 1e-10, 1.0, feature_std)
+
+        # Normalize training data
+        normalized_data = [
+            ((features - feature_mean) / feature_std, labels) for features, labels in train_data
+        ]
+
+        # Train model
+        if verbose:
+            print("Training structure network...")
+
+        model, history = train_structure_network(
+            normalized_data,
+            epochs=epochs,
+            batch_size=batch_size,
+            lr=lr,
+            hidden_dims=hidden_dims,
+            verbose=verbose,
+        )
+
+        # Build configuration
+        config = {
+            "n_vars": dimension,
+            "n_terms": n_terms,
+            "term_names": term_names,
+            "feature_mean": feature_mean,
+            "feature_std": feature_std,
+            "train_systems": [cls.__name__ for cls in train_system_classes],
+            "n_train_samples": len(train_data),
+            "noise_levels": noise_levels,
+            "hidden_dims": hidden_dims,
+        }
+
+        if verbose:
+            print(f"Training complete. Final val loss: {history['val_loss'][-1]:.4f}")
+
+        return model, history, config
+
 else:
 
     def train_structure_network(*args, **kwargs):
