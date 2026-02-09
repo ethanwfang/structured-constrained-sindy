@@ -12,11 +12,30 @@ from .biological import (
     SelkovGlycolysis,
     SIRModel,
 )
+from .canonical import (
+    CubicOscillator,
+    HopfNormalForm,
+    LinearOscillator,
+    QuadraticOscillator,
+    RayleighOscillator,
+)
 from .chaotic import (
     ChenSystem,
     DoublePendulum,
     Lorenz,
     Rossler,
+)
+from .ecological import (
+    CompetitiveExclusion,
+    MutualismModel,
+    PredatorPreyTypeII,
+    SISEpidemic,
+    SimplePredatorPrey,
+)
+from .neural import (
+    FitzHughNagumo,
+    HindmarshRose2D,
+    MorrisLecar,
 )
 from .oscillators import (
     DampedHarmonicOscillator,
@@ -47,6 +66,22 @@ __all__ = [
     "SelkovGlycolysis",
     "CoupledBrusselator",
     "SIRModel",
+    # Ecological (with xy interaction)
+    "CompetitiveExclusion",
+    "MutualismModel",
+    "SISEpidemic",
+    "PredatorPreyTypeII",
+    "SimplePredatorPrey",
+    # Neural
+    "FitzHughNagumo",
+    "MorrisLecar",
+    "HindmarshRose2D",
+    # Canonical
+    "HopfNormalForm",
+    "CubicOscillator",
+    "QuadraticOscillator",
+    "RayleighOscillator",
+    "LinearOscillator",
     # Chaotic
     "Lorenz",
     "Rossler",

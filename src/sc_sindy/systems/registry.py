@@ -9,7 +9,22 @@ from typing import Dict, List, Optional, Type
 
 from .base import DynamicalSystem
 from .biological import CoupledBrusselator, LotkaVolterra, SelkovGlycolysis, SIRModel
+from .canonical import (
+    CubicOscillator,
+    HopfNormalForm,
+    LinearOscillator,
+    QuadraticOscillator,
+    RayleighOscillator,
+)
 from .chaotic import ChenSystem, DoublePendulum, Lorenz, Rossler
+from .ecological import (
+    CompetitiveExclusion,
+    MutualismModel,
+    PredatorPreyTypeII,
+    SISEpidemic,
+    SimplePredatorPrey,
+)
+from .neural import FitzHughNagumo, HindmarshRose2D, MorrisLecar
 from .oscillators import DampedHarmonicOscillator, DuffingOscillator, ForcedOscillator, VanDerPol
 
 # Registry of all available systems
@@ -24,6 +39,22 @@ SYSTEM_REGISTRY: Dict[str, Type[DynamicalSystem]] = {
     "selkov": SelkovGlycolysis,
     "brusselator": CoupledBrusselator,
     "sir": SIRModel,
+    # Ecological (with xy interaction)
+    "competitive_exclusion": CompetitiveExclusion,
+    "mutualism": MutualismModel,
+    "sis_epidemic": SISEpidemic,
+    "predator_prey_type2": PredatorPreyTypeII,
+    "simple_predator_prey": SimplePredatorPrey,
+    # Neural
+    "fitzhugh_nagumo": FitzHughNagumo,
+    "morris_lecar": MorrisLecar,
+    "hindmarsh_rose": HindmarshRose2D,
+    # Canonical
+    "hopf": HopfNormalForm,
+    "cubic_oscillator": CubicOscillator,
+    "quadratic_oscillator": QuadraticOscillator,
+    "rayleigh": RayleighOscillator,
+    "linear_oscillator": LinearOscillator,
     # Chaotic
     "lorenz": Lorenz,
     "rossler": Rossler,
@@ -34,11 +65,32 @@ SYSTEM_REGISTRY: Dict[str, Type[DynamicalSystem]] = {
 
 # Categorized systems
 SYSTEM_CATEGORIES = {
-    "oscillators": ["vanderpol", "duffing", "damped_harmonic", "forced_oscillator"],
+    "oscillators": [
+        "vanderpol", "duffing", "damped_harmonic", "forced_oscillator",
+        "cubic_oscillator", "quadratic_oscillator", "rayleigh", "linear_oscillator",
+    ],
     "biological": ["lotka_volterra", "selkov", "brusselator", "sir"],
+    "ecological": [
+        "competitive_exclusion", "mutualism", "sis_epidemic",
+        "predator_prey_type2", "simple_predator_prey",
+    ],
+    "neural": ["fitzhugh_nagumo", "morris_lecar", "hindmarsh_rose"],
+    "canonical": ["hopf", "cubic_oscillator", "quadratic_oscillator", "rayleigh", "linear_oscillator"],
     "chaotic": ["lorenz", "rossler", "chen", "double_pendulum"],
-    "2d": ["vanderpol", "duffing", "damped_harmonic", "lotka_volterra", "selkov", "brusselator"],
+    "2d": [
+        "vanderpol", "duffing", "damped_harmonic", "forced_oscillator",
+        "lotka_volterra", "selkov", "brusselator",
+        "competitive_exclusion", "mutualism", "sis_epidemic",
+        "predator_prey_type2", "simple_predator_prey",
+        "fitzhugh_nagumo", "morris_lecar", "hindmarsh_rose",
+        "hopf", "cubic_oscillator", "quadratic_oscillator", "rayleigh", "linear_oscillator",
+    ],
     "3d": ["lorenz", "rossler", "chen", "sir"],
+    # Systems with xy bilinear interaction term
+    "xy_interaction": [
+        "lotka_volterra", "competitive_exclusion", "mutualism", "sis_epidemic",
+        "predator_prey_type2", "simple_predator_prey", "morris_lecar",
+    ],
 }
 
 

@@ -56,6 +56,18 @@ from .core import (
     sindy_stls,
     sindy_structure_constrained,
     sindy_structure_constrained_soft,
+    # Ensemble methods
+    ensemble_sindy,
+    ensemble_sindy_library_bagging,
+    compute_inclusion_probabilities,
+    EnsembleResult,
+    # Ensemble + Structure-Constrained
+    ensemble_structure_constrained_sindy,
+    two_stage_ensemble,
+    structure_weighted_ensemble,
+    probability_fusion,
+    get_uncertainty_report,
+    EnsembleSCResult,
 )
 
 # Derivative computation
@@ -131,6 +143,18 @@ __all__ = [
     "build_library_nd",
     "DEFAULT_STLS_THRESHOLD",
     "DEFAULT_STRUCTURE_THRESHOLD",
+    # Ensemble SINDy
+    "ensemble_sindy",
+    "ensemble_sindy_library_bagging",
+    "compute_inclusion_probabilities",
+    "EnsembleResult",
+    # Ensemble + Structure-Constrained SINDy
+    "ensemble_structure_constrained_sindy",
+    "two_stage_ensemble",
+    "structure_weighted_ensemble",
+    "probability_fusion",
+    "get_uncertainty_report",
+    "EnsembleSCResult",
     # Derivatives
     "compute_derivatives_finite_diff",
     "compute_derivatives_spline",
