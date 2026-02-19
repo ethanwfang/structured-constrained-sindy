@@ -17,6 +17,22 @@ from .canonical import (
     RayleighOscillator,
 )
 from .chaotic import ChenSystem, DoublePendulum, Lorenz, Rossler
+from .chaotic_3d import (
+    AizawaAttractor,
+    HalvorsenAttractor,
+    RabinovichFabrikant,
+    SprottB,
+    SprottD,
+    ThomasAttractor,
+)
+from .coupled_4d import (
+    CoupledDuffing,
+    CoupledFitzHughNagumo,
+    CoupledVanDerPol,
+    HyperchaoticLorenz,
+    HyperchaoticRossler,
+    LotkaVolterra4D,
+)
 from .ecological import (
     CompetitiveExclusion,
     MutualismModel,
@@ -60,6 +76,20 @@ SYSTEM_REGISTRY: Dict[str, Type[DynamicalSystem]] = {
     "rossler": Rossler,
     "chen": ChenSystem,
     "double_pendulum": DoublePendulum,
+    # Chaotic 3D (new)
+    "thomas": ThomasAttractor,
+    "halvorsen": HalvorsenAttractor,
+    "sprott_b": SprottB,
+    "sprott_d": SprottD,
+    "rabinovich_fabrikant": RabinovichFabrikant,
+    "aizawa": AizawaAttractor,
+    # Coupled 4D (new)
+    "coupled_vanderpol": CoupledVanDerPol,
+    "coupled_duffing": CoupledDuffing,
+    "hyperchaotic_lorenz": HyperchaoticLorenz,
+    "hyperchaotic_rossler": HyperchaoticRossler,
+    "lotka_volterra_4d": LotkaVolterra4D,
+    "coupled_fitzhugh_nagumo": CoupledFitzHughNagumo,
 }
 
 
@@ -76,7 +106,11 @@ SYSTEM_CATEGORIES = {
     ],
     "neural": ["fitzhugh_nagumo", "morris_lecar", "hindmarsh_rose"],
     "canonical": ["hopf", "cubic_oscillator", "quadratic_oscillator", "rayleigh", "linear_oscillator"],
-    "chaotic": ["lorenz", "rossler", "chen", "double_pendulum"],
+    "chaotic": [
+        "lorenz", "rossler", "chen", "double_pendulum",
+        "thomas", "halvorsen", "sprott_b", "sprott_d", "rabinovich_fabrikant", "aizawa",
+        "hyperchaotic_lorenz", "hyperchaotic_rossler",
+    ],
     "2d": [
         "vanderpol", "duffing", "damped_harmonic", "forced_oscillator",
         "lotka_volterra", "selkov", "brusselator",
@@ -85,11 +119,26 @@ SYSTEM_CATEGORIES = {
         "fitzhugh_nagumo", "morris_lecar", "hindmarsh_rose",
         "hopf", "cubic_oscillator", "quadratic_oscillator", "rayleigh", "linear_oscillator",
     ],
-    "3d": ["lorenz", "rossler", "chen", "sir"],
+    "3d": [
+        "lorenz", "rossler", "chen", "sir",
+        "thomas", "halvorsen", "sprott_b", "sprott_d", "rabinovich_fabrikant", "aizawa",
+    ],
+    "4d": [
+        "coupled_vanderpol", "coupled_duffing",
+        "hyperchaotic_lorenz", "hyperchaotic_rossler",
+        "lotka_volterra_4d", "coupled_fitzhugh_nagumo",
+    ],
     # Systems with xy bilinear interaction term
     "xy_interaction": [
         "lotka_volterra", "competitive_exclusion", "mutualism", "sis_epidemic",
         "predator_prey_type2", "simple_predator_prey", "morris_lecar",
+    ],
+    # Systems with bilinear interactions (any dimension)
+    "bilinear": [
+        "lotka_volterra", "competitive_exclusion", "mutualism", "sis_epidemic",
+        "predator_prey_type2", "simple_predator_prey", "morris_lecar",
+        "lorenz", "chen", "sir", "sprott_b", "rabinovich_fabrikant", "aizawa",
+        "hyperchaotic_lorenz", "hyperchaotic_rossler", "lotka_volterra_4d",
     ],
 }
 

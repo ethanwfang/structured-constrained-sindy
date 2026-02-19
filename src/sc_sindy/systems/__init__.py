@@ -25,6 +25,26 @@ from .chaotic import (
     Lorenz,
     Rossler,
 )
+from .chaotic_3d import (
+    AizawaAttractor,
+    HalvorsenAttractor,
+    RabinovichFabrikant,
+    SprottB,
+    SprottD,
+    ThomasAttractor,
+)
+from .coupled_4d import (
+    CoupledDuffing,
+    CoupledFitzHughNagumo,
+    CoupledVanDerPol,
+    Cubic4DSystem,
+    HyperchaoticLorenz,
+    HyperchaoticRossler,
+    LorenzExtended4D,
+    LotkaVolterra4D,
+    MixedCoupledOscillator,
+    SimpleQuadratic4D,
+)
 from .ecological import (
     CompetitiveExclusion,
     MutualismModel,
@@ -87,6 +107,24 @@ __all__ = [
     "Rossler",
     "ChenSystem",
     "DoublePendulum",
+    # Chaotic 3D (new)
+    "ThomasAttractor",
+    "HalvorsenAttractor",
+    "SprottB",
+    "SprottD",
+    "RabinovichFabrikant",
+    "AizawaAttractor",
+    # Coupled 4D (new)
+    "CoupledVanDerPol",
+    "CoupledDuffing",
+    "HyperchaoticLorenz",
+    "HyperchaoticRossler",
+    "LotkaVolterra4D",
+    "CoupledFitzHughNagumo",
+    "MixedCoupledOscillator",
+    "LorenzExtended4D",
+    "SimpleQuadratic4D",
+    "Cubic4DSystem",
     # Registry
     "get_system",
     "list_systems",

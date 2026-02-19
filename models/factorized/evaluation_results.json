@@ -1,0 +1,98 @@
+{
+  "2": [
+    [
+      "DampedHarmonicOscillator",
+      {
+        "precision": 0.66,
+        "recall": 0.8166666666666667,
+        "f1": 0.7166666666666667,
+        "n_samples": 20
+      }
+    ],
+    [
+      "LinearOscillator",
+      {
+        "precision": 1.0,
+        "recall": 0.7499999999999999,
+        "f1": 0.8500000000000002,
+        "n_samples": 20
+      }
+    ],
+    [
+      "ForcedOscillator",
+      {
+        "precision": 0.535,
+        "recall": 1.0,
+        "f1": 0.6958333333333332,
+        "n_samples": 20
+      }
+    ],
+    [
+      "PredatorPreyTypeII",
+      {
+        "precision": 0.6882142857142858,
+        "recall": 0.6700000000000002,
+        "f1": 0.6747222222222224,
+        "n_samples": 20
+      }
+    ],
+    [
+      "HindmarshRose2D",
+      {
+        "precision": 0.5,
+        "recall": 0.2857142857142857,
+        "f1": 0.3636363636363636,
+        "n_samples": 20
+      }
+    ]
+  ],
+  "3": [
+    [
+      "Lorenz",
+      {
+        "precision": 0.8041666666666666,
+        "recall": 0.7142857142857142,
+        "f1": 0.7525641025641023,
+        "n_samples": 20
+      }
+    ],
+    [
+      "SIRModel",
+      {
+        "precision": 0.22096833721833722,
+        "recall": 0.6875,
+        "f1": 0.3321490755546483,
+        "n_samples": 20
+      }
+    ],
+    [
+      "RabinovichFabrikant",
+      {
+        "precision": 0.3232484182484182,
+        "recall": 0.4050000000000001,
+        "f1": 0.3581786040046909,
+        "n_samples": 20
+      }
+    ]
+  ],
+  "4": [
+    [
+      "HyperchaoticRossler",
+      {
+        "precision": 0.39444638694638695,
+        "recall": 0.5,
+        "f1": 0.4400911369332422,
+        "n_samples": 20
+      }
+    ],
+    [
+      "CoupledFitzHughNagumo",
+      {
+        "precision": 0.5804195804195803,
+        "recall": 0.48571428571428565,
+        "f1": 0.5154376380828286,
+        "n_samples": 20
+      }
+    ]
+  ]
+}

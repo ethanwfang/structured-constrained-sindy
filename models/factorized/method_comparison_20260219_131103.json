@@ -1,0 +1,111 @@
+{
+  "config": {
+    "n_traj": 20,
+    "poly_order": 3,
+    "threshold": 0.5,
+    "model_path": "models/factorized/factorized_model.pt",
+    "n_bootstraps": 50,
+    "output_dir": "models/factorized"
+  },
+  "results": [
+    {
+      "method": "SC-SINDy",
+      "per_system": [
+        {
+          "system": "DampedHarmonicOscillator",
+          "dim": 2,
+          "precision": 0.6183333333333333,
+          "recall": 0.7833333333333333,
+          "f1": 0.6801587301587302,
+          "f1_std": 0.2368898057016204,
+          "n_samples": 20
+        },
+        {
+          "system": "LinearOscillator",
+          "dim": 2,
+          "precision": 1.0,
+          "recall": 0.7999999999999999,
+          "f1": 0.8800000000000001,
+          "f1_std": 0.09797958971132711,
+          "n_samples": 20
+        },
+        {
+          "system": "ForcedOscillator",
+          "dim": 2,
+          "precision": 0.545,
+          "recall": 1.0,
+          "f1": 0.7041666666666666,
+          "f1_std": 0.04145780987944246,
+          "n_samples": 20
+        },
+        {
+          "system": "PredatorPreyTypeII",
+          "dim": 2,
+          "precision": 0.6435714285714286,
+          "recall": 0.6400000000000001,
+          "f1": 0.6364646464646466,
+          "f1_std": 0.2013517096234064,
+          "n_samples": 20
+        },
+        {
+          "system": "HindmarshRose2D",
+          "dim": 2,
+          "precision": 0.5,
+          "recall": 0.2857142857142857,
+          "f1": 0.3636363636363636,
+          "f1_std": 5.551115123125783e-17,
+          "n_samples": 20
+        },
+        {
+          "system": "Lorenz",
+          "dim": 3,
+          "precision": 0.796904761904762,
+          "recall": 0.6857142857142856,
+          "f1": 0.7349816849816849,
+          "f1_std": 0.04105629087952118,
+          "n_samples": 20
+        },
+        {
+          "system": "SIRModel",
+          "dim": 3,
+          "precision": 0.2066179653679654,
+          "recall": 0.6375,
+          "f1": 0.3106748488869232,
+          "f1_std": 0.08642040343020642,
+          "n_samples": 20
+        },
+        {
+          "system": "RabinovichFabrikant",
+          "dim": 3,
+          "precision": 0.34223165723165716,
+          "recall": 0.4200000000000001,
+          "f1": 0.37509104320545966,
+          "f1_std": 0.061448311864176215,
+          "n_samples": 20
+        },
+        {
+          "system": "HyperchaoticRossler",
+          "dim": 4,
+          "precision": 0.3452950558213716,
+          "recall": 0.37426900584795325,
+          "f1": 0.35722976171077847,
+          "f1_std": 0.11901400118176826,
+          "n_samples": 19
+        },
+        {
+          "system": "CoupledFitzHughNagumo",
+          "dim": 4,
+          "precision": 0.5707159507159506,
+          "recall": 0.45357142857142846,
+          "f1": 0.4931721774226312,
+          "f1_std": 0.09831801935400986,
+          "n_samples": 20
+        }
+      ],
+      "mean_f1": 0.5535575923133884,
+      "std_f1": 0.18819332949224807,
+      "mean_precision": 0.5568670152946468,
+      "mean_recall": 0.6080102339181287
+    }
+  ]
+}

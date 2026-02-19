@@ -1,0 +1,209 @@
+{
+  "config": {
+    "n_seeds": 1,
+    "epochs": 5,
+    "latent_dim": 64,
+    "pos_weight": 3.0,
+    "poly_order": 3,
+    "n_traj": 2,
+    "use_correlations": false,
+    "output_dir": "models/factorized"
+  },
+  "per_seed_results": [
+    {
+      "2": [
+        {
+          "system": "DampedHarmonicOscillator",
+          "precision": 0.14999999999999997,
+          "recall": 1.0,
+          "f1": 0.26086956521739135,
+          "n_samples": 20
+        },
+        {
+          "system": "LinearOscillator",
+          "precision": 0.14999999999999997,
+          "recall": 1.0,
+          "f1": 0.26086956521739135,
+          "n_samples": 20
+        },
+        {
+          "system": "ForcedOscillator",
+          "precision": 0.14999999999999997,
+          "recall": 1.0,
+          "f1": 0.26086956521739135,
+          "n_samples": 20
+        },
+        {
+          "system": "PredatorPreyTypeII",
+          "precision": 0.25,
+          "recall": 1.0,
+          "f1": 0.4000000000000001,
+          "n_samples": 20
+        },
+        {
+          "system": "HindmarshRose2D",
+          "precision": 0.3499999999999999,
+          "recall": 1.0,
+          "f1": 0.5185185185185186,
+          "n_samples": 20
+        }
+      ],
+      "3": [
+        {
+          "system": "Lorenz",
+          "precision": 0.11666666666666667,
+          "recall": 1.0,
+          "f1": 0.20895522388059704,
+          "n_samples": 20
+        },
+        {
+          "system": "SIRModel",
+          "precision": 0.06666666666666667,
+          "recall": 1.0,
+          "f1": 0.125,
+          "n_samples": 20
+        },
+        {
+          "system": "RabinovichFabrikant",
+          "precision": 0.16666666666666663,
+          "recall": 1.0,
+          "f1": 0.2857142857142857,
+          "n_samples": 20
+        }
+      ],
+      "4": [
+        {
+          "system": "HyperchaoticRossler",
+          "precision": 0.06428571428571428,
+          "recall": 1.0,
+          "f1": 0.12080536912751678,
+          "n_samples": 20
+        },
+        {
+          "system": "CoupledFitzHughNagumo",
+          "precision": 0.10000000000000002,
+          "recall": 1.0,
+          "f1": 0.1818181818181818,
+          "n_samples": 20
+        }
+      ],
+      "aggregate": {
+        "mean_f1": 0.2623420274711274,
+        "std_f1": 0.11548098438187736
+      }
+    }
+  ],
+  "aggregated": {
+    "2": [
+      {
+        "system": "DampedHarmonicOscillator",
+        "precision_mean": 0.14999999999999997,
+        "precision_std": 0.0,
+        "recall_mean": 1.0,
+        "recall_std": 0.0,
+        "f1_mean": 0.26086956521739135,
+        "f1_std": 0.0,
+        "n_seeds": 1
+      },
+      {
+        "system": "LinearOscillator",
+        "precision_mean": 0.14999999999999997,
+        "precision_std": 0.0,
+        "recall_mean": 1.0,
+        "recall_std": 0.0,
+        "f1_mean": 0.26086956521739135,
+        "f1_std": 0.0,
+        "n_seeds": 1
+      },
+      {
+        "system": "ForcedOscillator",
+        "precision_mean": 0.14999999999999997,
+        "precision_std": 0.0,
+        "recall_mean": 1.0,
+        "recall_std": 0.0,
+        "f1_mean": 0.26086956521739135,
+        "f1_std": 0.0,
+        "n_seeds": 1
+      },
+      {
+        "system": "PredatorPreyTypeII",
+        "precision_mean": 0.25,
+        "precision_std": 0.0,
+        "recall_mean": 1.0,
+        "recall_std": 0.0,
+        "f1_mean": 0.4000000000000001,
+        "f1_std": 0.0,
+        "n_seeds": 1
+      },
+      {
+        "system": "HindmarshRose2D",
+        "precision_mean": 0.3499999999999999,
+        "precision_std": 0.0,
+        "recall_mean": 1.0,
+        "recall_std": 0.0,
+        "f1_mean": 0.5185185185185186,
+        "f1_std": 0.0,
+        "n_seeds": 1
+      }
+    ],
+    "3": [
+      {
+        "system": "Lorenz",
+        "precision_mean": 0.11666666666666667,
+        "precision_std": 0.0,
+        "recall_mean": 1.0,
+        "recall_std": 0.0,
+        "f1_mean": 0.20895522388059704,
+        "f1_std": 0.0,
+        "n_seeds": 1
+      },
+      {
+        "system": "SIRModel",
+        "precision_mean": 0.06666666666666667,
+        "precision_std": 0.0,
+        "recall_mean": 1.0,
+        "recall_std": 0.0,
+        "f1_mean": 0.125,
+        "f1_std": 0.0,
+        "n_seeds": 1
+      },
+      {
+        "system": "RabinovichFabrikant",
+        "precision_mean": 0.16666666666666663,
+        "precision_std": 0.0,
+        "recall_mean": 1.0,
+        "recall_std": 0.0,
+        "f1_mean": 0.2857142857142857,
+        "f1_std": 0.0,
+        "n_seeds": 1
+      }
+    ],
+    "4": [
+      {
+        "system": "HyperchaoticRossler",
+        "precision_mean": 0.06428571428571428,
+        "precision_std": 0.0,
+        "recall_mean": 1.0,
+        "recall_std": 0.0,
+        "f1_mean": 0.12080536912751678,
+        "f1_std": 0.0,
+        "n_seeds": 1
+      },
+      {
+        "system": "CoupledFitzHughNagumo",
+        "precision_mean": 0.10000000000000002,
+        "precision_std": 0.0,
+        "recall_mean": 1.0,
+        "recall_std": 0.0,
+        "f1_mean": 0.1818181818181818,
+        "f1_std": 0.0,
+        "n_seeds": 1
+      }
+    ],
+    "overall": {
+      "mean_f1": 0.2623420274711274,
+      "std_f1": 0.11548098438187736,
+      "n_systems": 10
+    }
+  }
+}

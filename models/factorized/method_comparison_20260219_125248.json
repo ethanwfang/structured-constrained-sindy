@@ -1,0 +1,111 @@
+{
+  "config": {
+    "n_traj": 2,
+    "poly_order": 3,
+    "threshold": 0.5,
+    "model_path": null,
+    "n_bootstraps": 5,
+    "output_dir": "models/factorized"
+  },
+  "results": [
+    {
+      "method": "SC-SINDy",
+      "per_system": [
+        {
+          "system": "DampedHarmonicOscillator",
+          "dim": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "f1_std": 0.0,
+          "n_samples": 2
+        },
+        {
+          "system": "LinearOscillator",
+          "dim": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "f1_std": 0.0,
+          "n_samples": 2
+        },
+        {
+          "system": "ForcedOscillator",
+          "dim": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "f1_std": 0.0,
+          "n_samples": 2
+        },
+        {
+          "system": "PredatorPreyTypeII",
+          "dim": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "f1_std": 0.0,
+          "n_samples": 2
+        },
+        {
+          "system": "HindmarshRose2D",
+          "dim": 2,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "f1_std": 0.0,
+          "n_samples": 2
+        },
+        {
+          "system": "Lorenz",
+          "dim": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "f1_std": 0.0,
+          "n_samples": 2
+        },
+        {
+          "system": "SIRModel",
+          "dim": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "f1_std": 0.0,
+          "n_samples": 2
+        },
+        {
+          "system": "RabinovichFabrikant",
+          "dim": 3,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "f1_std": 0.0,
+          "n_samples": 2
+        },
+        {
+          "system": "HyperchaoticRossler",
+          "dim": 4,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "f1_std": 0.0,
+          "n_samples": 2
+        },
+        {
+          "system": "CoupledFitzHughNagumo",
+          "dim": 4,
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "f1_std": 0.0,
+          "n_samples": 2
+        }
+      ],
+      "mean_f1": 0.0,
+      "std_f1": 0.0,
+      "mean_precision": 0.0,
+      "mean_recall": 0.0
+    }
+  ]
+}

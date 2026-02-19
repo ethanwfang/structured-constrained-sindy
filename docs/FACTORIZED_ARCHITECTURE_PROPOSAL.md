@@ -1,6 +1,6 @@
 # Factorized Architecture for Dimension-Agnostic SC-SINDy
 
-**Author:** [Your Name]
+**Author:** Ethan Fang
 **Date:** February 9, 2026
 **Purpose:** Technical proposal for extending SC-SINDy to arbitrary dimensions
 

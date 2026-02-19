@@ -1,0 +1,195 @@
+{
+  "config": {
+    "epochs": 3,
+    "latent_dim": 64,
+    "poly_order": 3,
+    "n_traj": 2,
+    "pos_weight": 3.0,
+    "seed": 42,
+    "experiments": [
+      "2D_only"
+    ],
+    "output_dir": "models/factorized"
+  },
+  "experiments": [
+    {
+      "experiment": "2D_only",
+      "config": {
+        "train_dims": [
+          2
+        ],
+        "test_dims": [
+          3,
+          4
+        ],
+        "description": "Train on 2D systems, test on 3D and 4D (full zero-shot)"
+      },
+      "results_by_dim": {
+        "3": {
+          "is_zero_shot": true,
+          "test_systems": [
+            {
+              "system": "Lorenz",
+              "dim": 3,
+              "precision": 0.11666666666666667,
+              "recall": 1.0,
+              "f1": 0.20895522388059704,
+              "n_samples": 20
+            },
+            {
+              "system": "SIRModel",
+              "dim": 3,
+              "precision": 0.06666666666666667,
+              "recall": 1.0,
+              "f1": 0.125,
+              "n_samples": 20
+            },
+            {
+              "system": "RabinovichFabrikant",
+              "dim": 3,
+              "precision": 0.16666666666666663,
+              "recall": 1.0,
+              "f1": 0.2857142857142857,
+              "n_samples": 20
+            }
+          ],
+          "train_systems": [
+            {
+              "system": "Rossler",
+              "dim": 3,
+              "precision": 0.11666666666666667,
+              "recall": 1.0,
+              "f1": 0.20895522388059704,
+              "n_samples": 20
+            },
+            {
+              "system": "ChenSystem",
+              "dim": 3,
+              "precision": 0.11666666666666667,
+              "recall": 1.0,
+              "f1": 0.20895522388059704,
+              "n_samples": 20
+            },
+            {
+              "system": "HalvorsenAttractor",
+              "dim": 3,
+              "precision": 0.20000000000000004,
+              "recall": 1.0,
+              "f1": 0.3333333333333333,
+              "n_samples": 20
+            },
+            {
+              "system": "SprottB",
+              "dim": 3,
+              "precision": 0.08333333333333331,
+              "recall": 1.0,
+              "f1": 0.15384615384615383,
+              "n_samples": 20
+            },
+            {
+              "system": "AizawaAttractor",
+              "dim": 3,
+              "precision": 0.2166666666666667,
+              "recall": 1.0,
+              "f1": 0.35616438356164376,
+              "n_samples": 20
+            }
+          ],
+          "test_mean_f1": 0.20655650319829424,
+          "train_mean_f1": 0.252250863700465
+        },
+        "4": {
+          "is_zero_shot": true,
+          "test_systems": [
+            {
+              "system": "HyperchaoticRossler",
+              "dim": 4,
+              "precision": 0.06428571428571428,
+              "recall": 1.0,
+              "f1": 0.12080536912751678,
+              "n_samples": 20
+            },
+            {
+              "system": "CoupledFitzHughNagumo",
+              "dim": 4,
+              "precision": 0.10000000000000002,
+              "recall": 1.0,
+              "f1": 0.1818181818181818,
+              "n_samples": 20
+            }
+          ],
+          "train_systems": [
+            {
+              "system": "CoupledVanDerPol",
+              "dim": 4,
+              "precision": 0.07142857142857142,
+              "recall": 1.0,
+              "f1": 0.13333333333333333,
+              "n_samples": 20
+            },
+            {
+              "system": "CoupledDuffing",
+              "dim": 4,
+              "precision": 0.07142857142857142,
+              "recall": 1.0,
+              "f1": 0.13333333333333333,
+              "n_samples": 20
+            },
+            {
+              "system": "HyperchaoticLorenz",
+              "dim": 4,
+              "precision": 0.07142857142857142,
+              "recall": 1.0,
+              "f1": 0.13333333333333333,
+              "n_samples": 20
+            },
+            {
+              "system": "LotkaVolterra4D",
+              "dim": 4,
+              "precision": 0.14285714285714285,
+              "recall": 1.0,
+              "f1": 0.25,
+              "n_samples": 20
+            },
+            {
+              "system": "MixedCoupledOscillator",
+              "dim": 4,
+              "precision": 0.07142857142857142,
+              "recall": 1.0,
+              "f1": 0.13333333333333333,
+              "n_samples": 20
+            },
+            {
+              "system": "LorenzExtended4D",
+              "dim": 4,
+              "precision": 0.06428571428571428,
+              "recall": 1.0,
+              "f1": 0.12080536912751678,
+              "n_samples": 20
+            },
+            {
+              "system": "SimpleQuadratic4D",
+              "dim": 4,
+              "precision": 0.05714285714285714,
+              "recall": 1.0,
+              "f1": 0.10810810810810809,
+              "n_samples": 20
+            },
+            {
+              "system": "Cubic4DSystem",
+              "dim": 4,
+              "precision": 0.05714285714285714,
+              "recall": 1.0,
+              "f1": 0.10810810810810809,
+              "n_samples": 20
+            }
+          ],
+          "test_mean_f1": 0.1513117754728493,
+          "train_mean_f1": 0.14004436483463328
+        }
+      },
+      "n_train_samples": 24,
+      "final_train_loss": 1.0643222332000732
+    }
+  ]
+}
