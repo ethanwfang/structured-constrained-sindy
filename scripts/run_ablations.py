@@ -57,6 +57,7 @@ ABLATION_CONFIGS = {
         "use_correlations": False,
         "pos_weight": 1.0,
         "use_tensor_product": False,  # Default sum aggregation
+        "include_spectral": False,
         "description": "Original architecture (embedding table, sum aggregation, standard BCE)",
     },
     # Individual components
@@ -65,6 +66,7 @@ ABLATION_CONFIGS = {
         "use_correlations": False,
         "pos_weight": 1.0,
         "use_tensor_product": False,
+        "include_spectral": False,
         "description": "Relative position equation encoder only",
     },
     "correlations_only": {
@@ -72,6 +74,7 @@ ABLATION_CONFIGS = {
         "use_correlations": True,
         "pos_weight": 1.0,
         "use_tensor_product": False,
+        "include_spectral": False,
         "description": "Pairwise correlations only",
     },
     "weighted_bce_only": {
@@ -79,6 +82,7 @@ ABLATION_CONFIGS = {
         "use_correlations": False,
         "pos_weight": 3.0,
         "use_tensor_product": False,
+        "include_spectral": False,
         "description": "Weighted BCE (pos_weight=3.0) only",
     },
     "tensor_product_only": {
@@ -86,7 +90,41 @@ ABLATION_CONFIGS = {
         "use_correlations": False,
         "pos_weight": 1.0,
         "use_tensor_product": True,
+        "include_spectral": False,
         "description": "Tensor product term embedding only",
+    },
+    # Spectral feature ablations
+    "spectral_only": {
+        "use_relative_eq_encoder": False,
+        "use_correlations": False,
+        "pos_weight": 1.0,
+        "use_tensor_product": False,
+        "include_spectral": True,
+        "description": "Spectral features only (autocorr, FFT, entropy)",
+    },
+    "spectral_corr": {
+        "use_relative_eq_encoder": False,
+        "use_correlations": True,
+        "pos_weight": 1.0,
+        "use_tensor_product": False,
+        "include_spectral": True,
+        "description": "Spectral features + correlations",
+    },
+    "spectral_tensor": {
+        "use_relative_eq_encoder": False,
+        "use_correlations": False,
+        "pos_weight": 1.0,
+        "use_tensor_product": True,
+        "include_spectral": True,
+        "description": "Spectral features + tensor product",
+    },
+    "spectral_full": {
+        "use_relative_eq_encoder": True,
+        "use_correlations": True,
+        "pos_weight": 1.0,
+        "use_tensor_product": True,
+        "include_spectral": True,
+        "description": "Spectral + correlations + tensor + rel_eq",
     },
     # Combinations
     "rel_eq_tensor": {
@@ -94,6 +132,7 @@ ABLATION_CONFIGS = {
         "use_correlations": False,
         "pos_weight": 1.0,
         "use_tensor_product": True,
+        "include_spectral": False,
         "description": "Relative eq encoder + tensor product",
     },
     "rel_eq_weighted": {
@@ -101,6 +140,7 @@ ABLATION_CONFIGS = {
         "use_correlations": False,
         "pos_weight": 3.0,
         "use_tensor_product": False,
+        "include_spectral": False,
         "description": "Relative eq encoder + weighted BCE",
     },
     "all_except_corr": {
@@ -108,6 +148,7 @@ ABLATION_CONFIGS = {
         "use_correlations": False,
         "pos_weight": 3.0,
         "use_tensor_product": True,
+        "include_spectral": False,
         "description": "All improvements except correlations",
     },
     # Full model
@@ -116,7 +157,28 @@ ABLATION_CONFIGS = {
         "use_correlations": True,
         "pos_weight": 3.0,
         "use_tensor_product": True,
+        "include_spectral": False,
         "description": "Full model with all improvements",
+    },
+    # Additional ablations for interaction mechanisms
+    # Note: concat_mlp (V1) removed as it has a different interface
+    "additive": {
+        "use_relative_eq_encoder": True,
+        "use_correlations": False,
+        "pos_weight": 1.0,
+        "use_tensor_product": False,
+        "include_spectral": False,
+        "interaction_type": "additive",  # Additive instead of bilinear
+        "description": "Additive interaction instead of bilinear",
+    },
+    "no_eq_encoder": {
+        "use_relative_eq_encoder": False,
+        "use_correlations": False,
+        "pos_weight": 1.0,
+        "use_tensor_product": False,
+        "include_spectral": False,
+        "use_eq_encoder": False,  # Disable equation encoder entirely
+        "description": "No equation encoder (equations share representation)",
     },
 }
 
@@ -208,6 +270,8 @@ def run_ablation(
     config: Dict,
     samples,
     samples_with_corr,
+    samples_spectral,
+    samples_spectral_corr,
     test_systems_by_dim: Dict,
     epochs: int,
     latent_dim: int,
@@ -220,12 +284,31 @@ def run_ablation(
     print(f"Description: {config['description']}")
     print(f"{'='*60}")
 
-    # Select appropriate training samples
+    # Select appropriate training samples based on config
     use_corr = config.get("use_correlations", False)
-    training_samples = samples_with_corr if use_corr else samples
+    use_spectral = config.get("include_spectral", False)
 
-    # Note: tensor_product is handled in term_embedder via embed_term's use_tensor_product param
-    # For now, we test the architectural components we can control in training
+    if use_spectral and use_corr:
+        training_samples = samples_spectral_corr
+        stats_dim = 12
+    elif use_spectral:
+        training_samples = samples_spectral
+        stats_dim = 12
+    elif use_corr:
+        training_samples = samples_with_corr
+        stats_dim = 8
+    else:
+        training_samples = samples
+        stats_dim = 8
+
+    # Handle V1 vs V2 architecture
+    use_v2 = config.get("use_v2", True)
+
+    # Handle interaction type (bilinear vs additive)
+    interaction_type = config.get("interaction_type", "bilinear")
+
+    # Handle equation encoder disable
+    use_eq_encoder = config.get("use_eq_encoder", True)
 
     model, history = train_factorized_network(
         samples=training_samples,
@@ -233,8 +316,12 @@ def run_ablation(
         epochs=epochs,
         pos_weight=config["pos_weight"],
         seed=seed,
-        use_relative_eq_encoder=config["use_relative_eq_encoder"],
-        use_correlations=config["use_correlations"],
+        use_v2=use_v2,
+        use_relative_eq_encoder=config.get("use_relative_eq_encoder", False),
+        use_correlations=config.get("use_correlations", False),
+        interaction_type=interaction_type,
+        use_eq_encoder=use_eq_encoder,
+        stats_dim=stats_dim,
         verbose=False,
     )
 
@@ -290,21 +377,41 @@ def main():
         4: TEST_SYSTEMS_4D,
     }
 
-    # Generate training data (both with and without correlations)
-    print("\nGenerating training data without correlations...")
+    # Generate training data (all combinations)
+    print("\nGenerating training data (base stats, no correlations)...")
     samples = generate_mixed_training_data(
         systems_by_dim=systems_by_dim,
         n_trajectories_per_system=args.n_traj,
         poly_order=args.poly_order,
         include_correlations=False,
+        include_spectral=False,
     )
 
-    print("\nGenerating training data with correlations...")
+    print("\nGenerating training data (base stats, with correlations)...")
     samples_with_corr = generate_mixed_training_data(
         systems_by_dim=systems_by_dim,
         n_trajectories_per_system=args.n_traj,
         poly_order=args.poly_order,
         include_correlations=True,
+        include_spectral=False,
+    )
+
+    print("\nGenerating training data (spectral stats, no correlations)...")
+    samples_spectral = generate_mixed_training_data(
+        systems_by_dim=systems_by_dim,
+        n_trajectories_per_system=args.n_traj,
+        poly_order=args.poly_order,
+        include_correlations=False,
+        include_spectral=True,
+    )
+
+    print("\nGenerating training data (spectral stats, with correlations)...")
+    samples_spectral_corr = generate_mixed_training_data(
+        systems_by_dim=systems_by_dim,
+        n_trajectories_per_system=args.n_traj,
+        poly_order=args.poly_order,
+        include_correlations=True,
+        include_spectral=True,
     )
 
     # Select configurations to run
@@ -321,6 +428,8 @@ def main():
             config=config,
             samples=samples,
             samples_with_corr=samples_with_corr,
+            samples_spectral=samples_spectral,
+            samples_spectral_corr=samples_spectral_corr,
             test_systems_by_dim=test_systems_by_dim,
             epochs=args.epochs,
             latent_dim=args.latent_dim,

@@ -1,0 +1,395 @@
+{
+  "config": {
+    "epochs": 30,
+    "latent_dim": 64,
+    "poly_order": 3,
+    "n_traj": 20,
+    "seed": 42,
+    "configs": [
+      "baseline",
+      "spectral_only",
+      "spectral_corr",
+      "spectral_tensor"
+    ],
+    "output_dir": "models/factorized"
+  },
+  "results": [
+    {
+      "config_name": "spectral_tensor",
+      "config": {
+        "use_relative_eq_encoder": false,
+        "use_correlations": false,
+        "pos_weight": 1.0,
+        "use_tensor_product": true,
+        "include_spectral": true,
+        "description": "Spectral features + tensor product"
+      },
+      "eval_results": {
+        "2": [
+          {
+            "system": "DampedHarmonicOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "LinearOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "ForcedOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "PredatorPreyTypeII",
+            "precision": 0.45,
+            "recall": 0.35000000000000003,
+            "f1": 0.3920634920634921,
+            "n_samples": 20
+          },
+          {
+            "system": "HindmarshRose2D",
+            "precision": 0.5,
+            "recall": 0.2857142857142857,
+            "f1": 0.3636363636363636,
+            "n_samples": 20
+          }
+        ],
+        "3": [
+          {
+            "system": "Lorenz",
+            "precision": 0.6666666666666665,
+            "recall": 0.5714285714285714,
+            "f1": 0.6153846153846152,
+            "n_samples": 20
+          },
+          {
+            "system": "SIRModel",
+            "precision": 0.2866666666666667,
+            "recall": 0.35,
+            "f1": 0.3122222222222223,
+            "n_samples": 20
+          },
+          {
+            "system": "RabinovichFabrikant",
+            "precision": 0.9017543859649123,
+            "recall": 0.3157894736842106,
+            "f1": 0.456641604010025,
+            "n_samples": 19
+          }
+        ],
+        "4": [
+          {
+            "system": "CoupledFitzHughNagumo",
+            "precision": 0.6270833333333333,
+            "recall": 0.3535714285714285,
+            "f1": 0.45181818181818184,
+            "n_samples": 20
+          }
+        ],
+        "aggregate": {
+          "mean_f1": 0.5736883389514968,
+          "mean_precision": 0.6313523391812866,
+          "mean_recall": 0.5807226399331662
+        }
+      },
+      "final_train_loss": 0.9462563792864481,
+      "final_val_loss": 0.3571432853738467
+    },
+    {
+      "config_name": "spectral_only",
+      "config": {
+        "use_relative_eq_encoder": false,
+        "use_correlations": false,
+        "pos_weight": 1.0,
+        "use_tensor_product": false,
+        "include_spectral": true,
+        "description": "Spectral features only (autocorr, FFT, entropy)"
+      },
+      "eval_results": {
+        "2": [
+          {
+            "system": "DampedHarmonicOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "LinearOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "ForcedOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "PredatorPreyTypeII",
+            "precision": 0.5,
+            "recall": 0.3600000000000001,
+            "f1": 0.41269841269841273,
+            "n_samples": 20
+          },
+          {
+            "system": "HindmarshRose2D",
+            "precision": 0.5,
+            "recall": 0.2857142857142857,
+            "f1": 0.3636363636363636,
+            "n_samples": 20
+          }
+        ],
+        "3": [
+          {
+            "system": "Lorenz",
+            "precision": 0.6666666666666665,
+            "recall": 0.5714285714285714,
+            "f1": 0.6153846153846152,
+            "n_samples": 20
+          },
+          {
+            "system": "SIRModel",
+            "precision": 0.2866666666666667,
+            "recall": 0.35,
+            "f1": 0.3122222222222223,
+            "n_samples": 20
+          },
+          {
+            "system": "RabinovichFabrikant",
+            "precision": 0.7733333333333333,
+            "recall": 0.33000000000000007,
+            "f1": 0.4576190476190477,
+            "n_samples": 20
+          }
+        ],
+        "4": [
+          {
+            "system": "HyperchaoticRossler",
+            "precision": 0.5,
+            "recall": 0.3333333333333333,
+            "f1": 0.4000000000000001,
+            "n_samples": 3
+          },
+          {
+            "system": "CoupledFitzHughNagumo",
+            "precision": 0.6270833333333333,
+            "recall": 0.3535714285714285,
+            "f1": 0.45181818181818184,
+            "n_samples": 20
+          }
+        ],
+        "aggregate": {
+          "mean_f1": 0.5584807414807416,
+          "mean_precision": 0.610375,
+          "mean_recall": 0.558404761904762
+        }
+      },
+      "final_train_loss": 0.9462563792864481,
+      "final_val_loss": 0.3571432853738467
+    },
+    {
+      "config_name": "spectral_corr",
+      "config": {
+        "use_relative_eq_encoder": false,
+        "use_correlations": true,
+        "pos_weight": 1.0,
+        "use_tensor_product": false,
+        "include_spectral": true,
+        "description": "Spectral features + correlations"
+      },
+      "eval_results": {
+        "2": [
+          {
+            "system": "DampedHarmonicOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "LinearOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "ForcedOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "PredatorPreyTypeII",
+            "precision": 0.375,
+            "recall": 0.2700000000000001,
+            "f1": 0.3095238095238096,
+            "n_samples": 20
+          },
+          {
+            "system": "HindmarshRose2D",
+            "precision": 0.5,
+            "recall": 0.2857142857142857,
+            "f1": 0.3636363636363636,
+            "n_samples": 20
+          }
+        ],
+        "3": [
+          {
+            "system": "Lorenz",
+            "precision": 0.6666666666666665,
+            "recall": 0.5714285714285714,
+            "f1": 0.6153846153846152,
+            "n_samples": 20
+          },
+          {
+            "system": "SIRModel",
+            "precision": 0.33333333333333326,
+            "recall": 0.5,
+            "f1": 0.4000000000000001,
+            "n_samples": 20
+          },
+          {
+            "system": "RabinovichFabrikant",
+            "precision": 0.5833333333333333,
+            "recall": 0.3000000000000001,
+            "f1": 0.38782051282051283,
+            "n_samples": 20
+          }
+        ],
+        "4": [
+          {
+            "system": "HyperchaoticRossler",
+            "precision": 0.35526315789473684,
+            "recall": 0.31578947368421045,
+            "f1": 0.33436532507739936,
+            "n_samples": 19
+          },
+          {
+            "system": "CoupledFitzHughNagumo",
+            "precision": 0.625,
+            "recall": 0.3571428571428571,
+            "f1": 0.4545454545454546,
+            "n_samples": 20
+          }
+        ],
+        "aggregate": {
+          "mean_f1": 0.5436704652416727,
+          "mean_precision": 0.5688596491228071,
+          "mean_recall": 0.5600075187969924
+        }
+      },
+      "final_train_loss": 0.9384952137867609,
+      "final_val_loss": 0.3595944171150525
+    },
+    {
+      "config_name": "baseline",
+      "config": {
+        "use_relative_eq_encoder": false,
+        "use_correlations": false,
+        "pos_weight": 1.0,
+        "use_tensor_product": false,
+        "include_spectral": false,
+        "description": "Original architecture (embedding table, sum aggregation, standard BCE)"
+      },
+      "eval_results": {
+        "2": [
+          {
+            "system": "DampedHarmonicOscillator",
+            "precision": 0.6,
+            "recall": 0.8,
+            "f1": 0.6857142857142857,
+            "n_samples": 20
+          },
+          {
+            "system": "LinearOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "ForcedOscillator",
+            "precision": 0.75,
+            "recall": 1.0,
+            "f1": 0.8571428571428571,
+            "n_samples": 20
+          },
+          {
+            "system": "PredatorPreyTypeII",
+            "precision": 0.275,
+            "recall": 0.22000000000000003,
+            "f1": 0.24444444444444446,
+            "n_samples": 20
+          },
+          {
+            "system": "HindmarshRose2D",
+            "precision": 0.5,
+            "recall": 0.2857142857142857,
+            "f1": 0.3636363636363636,
+            "n_samples": 20
+          }
+        ],
+        "3": [
+          {
+            "system": "Lorenz",
+            "precision": 0.6666666666666665,
+            "recall": 0.5714285714285714,
+            "f1": 0.6153846153846152,
+            "n_samples": 20
+          },
+          {
+            "system": "SIRModel",
+            "precision": 0.18249999999999997,
+            "recall": 0.2375,
+            "f1": 0.20472222222222225,
+            "n_samples": 20
+          },
+          {
+            "system": "RabinovichFabrikant",
+            "precision": 0.25,
+            "recall": 0.14,
+            "f1": 0.17857142857142858,
+            "n_samples": 20
+          }
+        ],
+        "4": [
+          {
+            "system": "HyperchaoticRossler",
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "n_samples": 20
+          },
+          {
+            "system": "CoupledFitzHughNagumo",
+            "precision": 0.625,
+            "recall": 0.3571428571428571,
+            "f1": 0.4545454545454546,
+            "n_samples": 20
+          }
+        ],
+        "aggregate": {
+          "mean_f1": 0.44613045288045294,
+          "mean_precision": 0.4599166666666667,
+          "mean_recall": 0.4611785714285713
+        }
+      },
+      "final_train_loss": 0.952927964925766,
+      "final_val_loss": 0.3609426220258077
+    }
+  ]
+}

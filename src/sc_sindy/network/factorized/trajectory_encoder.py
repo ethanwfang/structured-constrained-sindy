@@ -19,7 +19,9 @@ except ImportError:
     TORCH_AVAILABLE = False
 
 
-def extract_per_variable_stats(x: np.ndarray) -> np.ndarray:
+def extract_per_variable_stats(
+    x: np.ndarray, include_spectral: bool = False
+) -> np.ndarray:
     """
     Extract statistical features from each variable of a trajectory.
 
@@ -27,32 +29,41 @@ def extract_per_variable_stats(x: np.ndarray) -> np.ndarray:
     ----------
     x : np.ndarray
         Trajectory with shape [T, n_vars].
+    include_spectral : bool, optional
+        If True, include 4 additional spectral/temporal features:
+        autocorr_time, peak_freq, spectral_entropy, spectral_centroid.
+        (default: False for backward compatibility)
 
     Returns
     -------
     stats : np.ndarray
-        Statistics with shape [n_vars, n_stats] where n_stats=8.
+        Statistics with shape [n_vars, n_stats] where n_stats=8 (base)
+        or n_stats=12 (with spectral features).
     """
     n_vars = x.shape[1]
-    stats_per_var = 8
+    base_stats_per_var = 8
 
-    stats = np.zeros((n_vars, stats_per_var))
+    base_stats = np.zeros((n_vars, base_stats_per_var))
 
     for i in range(n_vars):
         xi = x[:, i]
-        stats[i, 0] = np.mean(xi)
-        stats[i, 1] = np.std(xi)
-        stats[i, 2] = skew(xi)
-        stats[i, 3] = kurtosis(xi)
-        stats[i, 4] = np.mean(xi**2)  # energy
-        stats[i, 5] = np.max(xi) - np.min(xi)  # range
-        stats[i, 6] = np.median(xi)
-        stats[i, 7] = np.mean(np.abs(np.diff(xi)))  # avg derivative magnitude
+        base_stats[i, 0] = np.mean(xi)
+        base_stats[i, 1] = np.std(xi)
+        base_stats[i, 2] = skew(xi)
+        base_stats[i, 3] = kurtosis(xi)
+        base_stats[i, 4] = np.mean(xi**2)  # energy
+        base_stats[i, 5] = np.max(xi) - np.min(xi)  # range
+        base_stats[i, 6] = np.median(xi)
+        base_stats[i, 7] = np.mean(np.abs(np.diff(xi)))  # avg derivative magnitude
 
     # Handle NaN/Inf
-    stats = np.nan_to_num(stats, nan=0.0, posinf=1e6, neginf=-1e6)
+    base_stats = np.nan_to_num(base_stats, nan=0.0, posinf=1e6, neginf=-1e6)
 
-    return stats
+    if include_spectral:
+        spectral_stats = extract_spectral_features(x)
+        return np.concatenate([base_stats, spectral_stats], axis=1)
+
+    return base_stats
 
 
 def extract_pairwise_correlations(x: np.ndarray) -> np.ndarray:
@@ -83,9 +94,40 @@ def extract_pairwise_correlations(x: np.ndarray) -> np.ndarray:
     return corr_matrix
 
 
-def extract_stats_with_correlations(x: np.ndarray) -> tuple:
+def extract_stats_with_correlations(
+    x: np.ndarray, include_spectral: bool = False
+) -> tuple:
     """
     Extract both per-variable stats and pairwise correlations.
+
+    Parameters
+    ----------
+    x : np.ndarray
+        Trajectory with shape [T, n_vars].
+    include_spectral : bool, optional
+        If True, include spectral features in stats (default: False).
+
+    Returns
+    -------
+    stats : np.ndarray
+        Per-variable statistics with shape [n_vars, 8] or [n_vars, 12] if spectral.
+    corr_matrix : np.ndarray
+        Pairwise correlation matrix with shape [n_vars, n_vars].
+    """
+    stats = extract_per_variable_stats(x, include_spectral=include_spectral)
+    corr_matrix = extract_pairwise_correlations(x)
+    return stats, corr_matrix
+
+
+def extract_spectral_features(x: np.ndarray) -> np.ndarray:
+    """
+    Extract spectral and temporal features from each variable of a trajectory.
+
+    These features capture dynamics that summary statistics miss:
+    - Autocorrelation time: oscillation period / damping timescale
+    - Peak FFT frequency: dominant oscillation frequency
+    - Spectral entropy: regularity (low=periodic, high=chaotic)
+    - Spectral centroid: "center of mass" of frequency content
 
     Parameters
     ----------
@@ -94,14 +136,70 @@ def extract_stats_with_correlations(x: np.ndarray) -> tuple:
 
     Returns
     -------
-    stats : np.ndarray
-        Per-variable statistics with shape [n_vars, 8].
-    corr_matrix : np.ndarray
-        Pairwise correlation matrix with shape [n_vars, n_vars].
+    features : np.ndarray
+        Spectral features with shape [n_vars, 4].
+        Columns: [autocorr_time, peak_freq, spectral_entropy, spectral_centroid]
     """
-    stats = extract_per_variable_stats(x)
-    corr_matrix = extract_pairwise_correlations(x)
-    return stats, corr_matrix
+    n_vars = x.shape[1]
+    T = x.shape[0]
+    features = np.zeros((n_vars, 4))
+
+    for i in range(n_vars):
+        xi = x[:, i]
+        xi_centered = xi - np.mean(xi)
+
+        # Handle edge case of constant signal
+        if np.std(xi) < 1e-10:
+            features[i] = [1.0, 0.0, 0.0, 0.0]
+            continue
+
+        # 1. Autocorrelation time (decay to 1/e)
+        # Using numpy correlate for efficiency
+        acf = np.correlate(xi_centered, xi_centered, mode="full")
+        acf = acf[T - 1 :]  # Take positive lags only
+        if acf[0] > 0:
+            acf = acf / acf[0]  # Normalize
+        else:
+            acf = np.zeros_like(acf)
+
+        # Find first crossing below 1/e threshold
+        threshold = 1.0 / np.e
+        decay_idx = np.where(acf < threshold)[0]
+        autocorr_time = decay_idx[0] / T if len(decay_idx) > 0 else 1.0
+
+        # 2-4. FFT-based features
+        fft_vals = np.fft.rfft(xi_centered)
+        psd = np.abs(fft_vals) ** 2
+
+        # Normalize PSD to probability distribution
+        psd_sum = psd.sum()
+        if psd_sum > 1e-10:
+            psd_norm = psd / psd_sum
+        else:
+            psd_norm = np.ones_like(psd) / len(psd)
+
+        freqs = np.fft.rfftfreq(T)
+
+        # Peak frequency (normalized, in [0, 0.5])
+        # Skip DC component (index 0) as it represents the mean, not oscillatory behavior
+        peak_freq = freqs[1 + np.argmax(psd[1:])] if len(psd) > 1 else 0.0
+
+        # Spectral entropy: -sum(p * log(p)), normalized to [0, 1]
+        # Higher entropy = more broadband/chaotic, lower = more periodic
+        psd_nonzero = psd_norm[psd_norm > 1e-10]
+        spectral_entropy = -np.sum(psd_nonzero * np.log(psd_nonzero))
+        max_entropy = np.log(len(psd))
+        spectral_entropy = spectral_entropy / max_entropy if max_entropy > 0 else 0.0
+
+        # Spectral centroid: weighted average frequency
+        spectral_centroid = np.sum(freqs * psd_norm)
+
+        features[i] = [autocorr_time, peak_freq, spectral_entropy, spectral_centroid]
+
+    # Handle NaN/Inf with sensible defaults
+    features = np.nan_to_num(features, nan=0.5, posinf=1.0, neginf=0.0)
+
+    return features
 
 
 if TORCH_AVAILABLE:
@@ -124,6 +222,9 @@ if TORCH_AVAILABLE:
             Output latent dimension.
         stats_dim : int, optional
             Number of statistics per variable (default: 8).
+            Use stats_dim=12 with extract_per_variable_stats(x, include_spectral=True)
+            to include spectral features (autocorr_time, peak_freq, spectral_entropy,
+            spectral_centroid).
         hidden_dim : int, optional
             Hidden layer dimension (default: 64).
         """
@@ -240,6 +341,8 @@ if TORCH_AVAILABLE:
             Output latent dimension.
         stats_dim : int, optional
             Number of statistics per variable (default: 8).
+            Use stats_dim=12 with extract_stats_with_correlations(x, include_spectral=True)
+            to include spectral features.
         hidden_dim : int, optional
             Hidden layer dimension (default: 64).
         use_correlation_attention : bool, optional

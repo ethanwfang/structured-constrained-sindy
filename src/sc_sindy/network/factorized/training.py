@@ -5,6 +5,7 @@ This module provides functions to train the factorized network on
 mixed-dimension dynamical systems (2D, 3D, etc. combined).
 """
 
+import time
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple, Type
 
@@ -43,6 +44,7 @@ def generate_training_sample(
     noise_level: float = 0.0,
     trim: int = 100,
     include_correlations: bool = False,
+    include_spectral: bool = False,
 ) -> Optional[TrainingSample]:
     """
     Generate a single training sample from a dynamical system.
@@ -63,6 +65,10 @@ def generate_training_sample(
         Points to trim from start/end.
     include_correlations : bool, optional
         If True, extract pairwise correlations (default: False).
+    include_spectral : bool, optional
+        If True, include spectral features (autocorr_time, peak_freq,
+        spectral_entropy, spectral_centroid) in statistics. Increases
+        stats_dim from 8 to 12 (default: False).
 
     Returns
     -------
@@ -87,9 +93,13 @@ def generate_training_sample(
 
         # Extract statistics (and optionally correlations)
         if include_correlations:
-            stats, corr_matrix = extract_stats_with_correlations(trajectory)
+            stats, corr_matrix = extract_stats_with_correlations(
+                trajectory, include_spectral=include_spectral
+            )
         else:
-            stats = extract_per_variable_stats(trajectory)
+            stats = extract_per_variable_stats(
+                trajectory, include_spectral=include_spectral
+            )
             corr_matrix = None
 
         # Get true structure
@@ -116,6 +126,7 @@ def generate_mixed_training_data(
     t_span: Tuple[float, float] = (0, 50),
     n_points: int = 5000,
     include_correlations: bool = False,
+    include_spectral: bool = False,
 ) -> List[TrainingSample]:
     """
     Generate training data from systems of mixed dimensions.
@@ -137,6 +148,9 @@ def generate_mixed_training_data(
         Number of time points.
     include_correlations : bool, optional
         If True, extract pairwise correlations for each sample (default: False).
+    include_spectral : bool, optional
+        If True, include spectral features in statistics (default: False).
+        Increases stats_dim from 8 to 12.
 
     Returns
     -------
@@ -168,6 +182,7 @@ def generate_mixed_training_data(
                     n_points=n_points,
                     noise_level=noise_level,
                     include_correlations=include_correlations,
+                    include_spectral=include_spectral,
                 )
 
                 if sample is not None:
@@ -264,6 +279,9 @@ if TORCH_AVAILABLE:
         seed: Optional[int] = None,
         use_relative_eq_encoder: bool = True,
         use_correlations: bool = False,
+        interaction_type: str = "bilinear",
+        use_eq_encoder: bool = True,
+        stats_dim: Optional[int] = None,
     ) -> Tuple[nn.Module, Dict]:
         """
         Train a factorized structure network.
@@ -304,6 +322,15 @@ if TORCH_AVAILABLE:
         use_correlations : bool, optional
             If True, use pairwise correlations in trajectory encoding.
             Samples must have corr_matrix populated (default: False).
+        interaction_type : str, optional
+            Type of interaction between embeddings: 'bilinear' or 'additive'
+            (default: 'bilinear').
+        use_eq_encoder : bool, optional
+            If True, use equation encoder. If False, all equations share
+            the same representation (default: True).
+        stats_dim : int, optional
+            Number of statistics per variable. If None, inferred from samples
+            (default: None). Use 8 for base statistics, 12 for spectral features.
 
         Returns
         -------
@@ -318,6 +345,13 @@ if TORCH_AVAILABLE:
             torch.manual_seed(seed)
             if torch.cuda.is_available():
                 torch.cuda.manual_seed_all(seed)
+
+        # Infer stats_dim from samples if not provided
+        if stats_dim is None and len(samples) > 0:
+            stats_dim = samples[0].stats.shape[1]
+        elif stats_dim is None:
+            stats_dim = 8  # Default
+
         # Create model if not provided
         if model is None:
             if use_v2:
@@ -325,6 +359,9 @@ if TORCH_AVAILABLE:
                     latent_dim=latent_dim,
                     use_relative_eq_encoder=use_relative_eq_encoder,
                     use_correlations=use_correlations,
+                    interaction_type=interaction_type,
+                    use_eq_encoder=use_eq_encoder,
+                    stats_dim=stats_dim,
                 )
             else:
                 model = FactorizedStructureNetwork(latent_dim=latent_dim)
@@ -370,13 +407,15 @@ if TORCH_AVAILABLE:
         criterion = weighted_bce_loss if pos_weight != 1.0 else nn.BCELoss()
         optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
-        # Training loop
-        history = {"train_loss": [], "val_loss": []}
+        # Training loop with timing
+        history = {"train_loss": [], "val_loss": [], "epoch_times": []}
         best_val_loss = float("inf")
         patience_counter = 0
         best_state = None
+        training_start_time = time.time()
 
         for epoch in range(epochs):
+            epoch_start_time = time.time()
             # Training
             model.train()
             train_losses = []
@@ -391,8 +430,11 @@ if TORCH_AVAILABLE:
                     target = batch["structure"]  # [batch, n_vars, n_terms]
                     corr_matrix = batch.get("corr_matrix", None)  # [batch, n_vars, n_vars]
 
-                    # Forward pass (with correlations if available)
-                    probs = model.forward(stats, n_vars, poly_order, corr_matrix)
+                    # Forward pass (with correlations if available, only for V2)
+                    if use_v2 and corr_matrix is not None:
+                        probs = model.forward(stats, n_vars, poly_order, corr_matrix)
+                    else:
+                        probs = model.forward(stats, n_vars, poly_order)
 
                     # Handle single sample case
                     if probs.dim() == 2:
@@ -402,6 +444,8 @@ if TORCH_AVAILABLE:
                     batch_loss += loss
 
                 batch_loss.backward()
+                # Gradient clipping to prevent exploding gradients
+                torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
                 optimizer.step()
                 train_losses.append(batch_loss.item())
 
@@ -420,7 +464,11 @@ if TORCH_AVAILABLE:
                         target = batch["structure"]
                         corr_matrix = batch.get("corr_matrix", None)
 
-                        probs = model.forward(stats, n_vars, poly_order, corr_matrix)
+                        # Forward pass (with correlations if available, only for V2)
+                        if use_v2 and corr_matrix is not None:
+                            probs = model.forward(stats, n_vars, poly_order, corr_matrix)
+                        else:
+                            probs = model.forward(stats, n_vars, poly_order)
                         if probs.dim() == 2:
                             probs = probs.unsqueeze(0)
 
@@ -429,6 +477,7 @@ if TORCH_AVAILABLE:
 
             avg_val_loss = np.mean(val_losses) if val_losses else avg_train_loss
             history["val_loss"].append(avg_val_loss)
+            history["epoch_times"].append(time.time() - epoch_start_time)
 
             # Early stopping
             if avg_val_loss < best_val_loss:
@@ -452,6 +501,14 @@ if TORCH_AVAILABLE:
         # Restore best model
         if best_state is not None:
             model.load_state_dict(best_state)
+
+        # Add timing summary to history
+        total_training_time = time.time() - training_start_time
+        history["timing"] = {
+            "total_seconds": total_training_time,
+            "epochs_completed": len(history["epoch_times"]),
+            "avg_epoch_seconds": np.mean(history["epoch_times"]) if history["epoch_times"] else 0,
+        }
 
         return model, history
 

@@ -6,6 +6,7 @@ encoding with term embedding to predict equation structure regardless of
 the input dimension.
 """
 
+import warnings
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -198,6 +199,14 @@ if TORCH_AVAILABLE:
                 self.trajectory_encoder = HybridEncoder(latent_dim=latent_dim)
             else:
                 raise ValueError(f"Unknown encoder type: {encoder_type}")
+
+            # Warn about untested configurations
+            if max_vars > 10:
+                warnings.warn(
+                    f"max_vars={max_vars} exceeds 10. The model has been validated "
+                    f"for n_vars <= 10. Results on higher-dimensional systems may vary.",
+                    UserWarning,
+                )
 
             # Term embedder
             self.term_embedder = TermEmbedder(
@@ -468,6 +477,17 @@ if TORCH_AVAILABLE:
         use_correlations : bool, optional
             If True, use StatisticsEncoderWithCorrelations to capture
             cross-variable interactions (default: False).
+        interaction_type : str, optional
+            Type of interaction between embeddings. Options:
+            - 'bilinear': Element-wise product z_traj * e_term * e_eq (default)
+            - 'additive': Sum z_traj + e_term + e_eq
+        use_eq_encoder : bool, optional
+            If True, use equation encoder. If False, all equations share
+            the same representation (default: True).
+        stats_dim : int, optional
+            Number of statistics per variable (default: 8).
+            Use 12 for spectral features (autocorr_time, peak_freq,
+            spectral_entropy, spectral_centroid).
         """
 
         def __init__(
@@ -478,6 +498,9 @@ if TORCH_AVAILABLE:
             max_terms: int = 50,
             use_relative_eq_encoder: bool = True,
             use_correlations: bool = False,
+            interaction_type: str = "bilinear",
+            use_eq_encoder: bool = True,
+            stats_dim: int = 8,
         ):
             super().__init__()
 
@@ -487,22 +510,45 @@ if TORCH_AVAILABLE:
             self.max_terms = max_terms
             self.use_relative_eq_encoder = use_relative_eq_encoder
             self.use_correlations = use_correlations
+            self.interaction_type = interaction_type
+            self.use_eq_encoder = use_eq_encoder
+            self.stats_dim = stats_dim
+
+            # Validate interaction type
+            if interaction_type not in ("bilinear", "additive"):
+                raise ValueError(f"Unknown interaction_type: {interaction_type}")
+
+            # Warn about untested configurations
+            if max_vars > 10:
+                warnings.warn(
+                    f"max_vars={max_vars} exceeds 10. The model has been validated "
+                    f"for n_vars <= 10. Results on higher-dimensional systems may vary.",
+                    UserWarning,
+                )
 
             # Trajectory encoder: with or without correlations
             if use_correlations:
                 self.trajectory_encoder = StatisticsEncoderWithCorrelations(
-                    latent_dim=latent_dim, use_correlation_attention=True
+                    latent_dim=latent_dim,
+                    stats_dim=stats_dim,
+                    use_correlation_attention=True,
                 )
             else:
-                self.trajectory_encoder = StatisticsEncoder(latent_dim=latent_dim)
+                self.trajectory_encoder = StatisticsEncoder(
+                    latent_dim=latent_dim, stats_dim=stats_dim
+                )
 
             # Term embedder
             self.term_embedder = TermEmbedder(
                 latent_dim=latent_dim, max_vars=max_vars, max_power=max_power
             )
 
-            # Equation encoder: relative position (new) or embedding table (legacy)
-            if use_relative_eq_encoder:
+            # Equation encoder: relative position (new), embedding table (legacy), or none
+            if not use_eq_encoder:
+                # No equation encoder - all equations share same representation
+                self.eq_encoder = None
+                self.eq_embed = None
+            elif use_relative_eq_encoder:
                 self.eq_encoder = RelativeEquationEncoder(embed_dim=latent_dim)
                 self.eq_embed = None  # Not used
             else:
@@ -512,7 +558,10 @@ if TORCH_AVAILABLE:
             # Efficient matching network using bilinear attention
             self.traj_proj = nn.Linear(latent_dim, latent_dim)
             self.term_proj = nn.Linear(latent_dim, latent_dim)
-            self.eq_proj = nn.Linear(latent_dim, latent_dim)
+            if use_eq_encoder:
+                self.eq_proj = nn.Linear(latent_dim, latent_dim)
+            else:
+                self.eq_proj = None
 
             # Final classifier
             self.classifier = nn.Sequential(
@@ -576,31 +625,46 @@ if TORCH_AVAILABLE:
             term_embeds = self.term_embedder(n_vars, poly_order)
             term_embeds = self.term_proj(term_embeds)  # [n_terms, latent_dim]
 
-            # Embed equations: [n_vars, latent_dim]
-            if self.use_relative_eq_encoder:
+            # Embed equations: [n_vars, latent_dim] or None
+            if not self.use_eq_encoder:
+                # No equation encoder - equations share representation
+                eq_embeds = None
+            elif self.use_relative_eq_encoder:
                 # Use relative position encoder (dimension-agnostic)
                 eq_embeds = self.eq_encoder.forward_batch(n_vars, device=stats.device)
+                eq_embeds = self.eq_proj(eq_embeds)  # [n_vars, latent_dim]
             else:
                 # Use embedding table (legacy)
                 eq_indices = torch.arange(n_vars, device=stats.device)
                 eq_embeds = self.eq_embed(eq_indices)
-            eq_embeds = self.eq_proj(eq_embeds)  # [n_vars, latent_dim]
+                eq_embeds = self.eq_proj(eq_embeds)  # [n_vars, latent_dim]
 
             # Normalize embeddings before interaction to prevent explosion
             z_traj = z_traj / (z_traj.norm(dim=-1, keepdim=True) + 1e-8)
             term_embeds = term_embeds / (term_embeds.norm(dim=-1, keepdim=True) + 1e-8)
-            eq_embeds = eq_embeds / (eq_embeds.norm(dim=-1, keepdim=True) + 1e-8)
+            if eq_embeds is not None:
+                eq_embeds = eq_embeds / (eq_embeds.norm(dim=-1, keepdim=True) + 1e-8)
 
             # Compute interaction for all (batch, eq, term) combinations
             # z_traj: [batch, 1, 1, latent_dim]
             # term_embeds: [1, 1, n_terms, latent_dim]
-            # eq_embeds: [1, n_vars, 1, latent_dim]
+            # eq_embeds: [1, n_vars, 1, latent_dim] or None
             z_traj_exp = z_traj.unsqueeze(1).unsqueeze(2)  # [batch, 1, 1, latent]
             term_exp = term_embeds.unsqueeze(0).unsqueeze(0)  # [1, 1, n_terms, latent]
-            eq_exp = eq_embeds.unsqueeze(0).unsqueeze(2)  # [1, n_vars, 1, latent]
 
-            # Element-wise product (bilinear interaction)
-            interaction = z_traj_exp * term_exp * eq_exp  # [batch, n_vars, n_terms, latent]
+            if eq_embeds is not None:
+                eq_exp = eq_embeds.unsqueeze(0).unsqueeze(2)  # [1, n_vars, 1, latent]
+            else:
+                # No equation encoder: replicate term embeddings for each equation
+                eq_exp = torch.ones(1, n_vars, 1, self.latent_dim, device=stats.device)
+
+            # Compute interaction based on interaction_type
+            if self.interaction_type == "bilinear":
+                # Element-wise product (bilinear interaction)
+                interaction = z_traj_exp * term_exp * eq_exp  # [batch, n_vars, n_terms, latent]
+            else:  # additive
+                # Sum of embeddings (additive interaction)
+                interaction = z_traj_exp + term_exp + eq_exp  # [batch, n_vars, n_terms, latent]
 
             # Classify
             probs = self.classifier(interaction).squeeze(-1)  # [batch, n_vars, n_terms]
@@ -623,15 +687,20 @@ if TORCH_AVAILABLE:
             if n_vars is None:
                 n_vars = x.shape[1]
 
+            # Determine if spectral features were used during training
+            include_spectral = self.stats_dim > 8
+
             self.eval()
             with torch.no_grad():
                 if self.use_correlations:
-                    stats, corr = extract_stats_with_correlations(x)
+                    stats, corr = extract_stats_with_correlations(
+                        x, include_spectral=include_spectral
+                    )
                     stats_tensor = torch.FloatTensor(stats)
                     corr_tensor = torch.FloatTensor(corr)
                     probs = self.forward(stats_tensor, n_vars, poly_order, corr_tensor)
                 else:
-                    stats = extract_per_variable_stats(x)
+                    stats = extract_per_variable_stats(x, include_spectral=include_spectral)
                     stats_tensor = torch.FloatTensor(stats)
                     probs = self.forward(stats_tensor, n_vars, poly_order)
                 return probs.numpy()
@@ -681,13 +750,18 @@ if TORCH_AVAILABLE:
             if n_vars is None:
                 n_vars = x.shape[1]
 
+            # Determine if spectral features were used during training
+            include_spectral = self.stats_dim > 8
+
             # Prepare inputs
             if self.use_correlations:
-                stats, corr = extract_stats_with_correlations(x)
+                stats, corr = extract_stats_with_correlations(
+                    x, include_spectral=include_spectral
+                )
                 stats_tensor = torch.FloatTensor(stats)
                 corr_tensor = torch.FloatTensor(corr)
             else:
-                stats = extract_per_variable_stats(x)
+                stats = extract_per_variable_stats(x, include_spectral=include_spectral)
                 stats_tensor = torch.FloatTensor(stats)
                 corr_tensor = None
 
@@ -725,6 +799,9 @@ if TORCH_AVAILABLE:
                     "max_terms": self.max_terms,
                     "use_relative_eq_encoder": self.use_relative_eq_encoder,
                     "use_correlations": self.use_correlations,
+                    "interaction_type": self.interaction_type,
+                    "use_eq_encoder": self.use_eq_encoder,
+                    "stats_dim": self.stats_dim,
                 },
                 path,
             )
@@ -741,11 +818,15 @@ if TORCH_AVAILABLE:
             if "model_state_dict" in checkpoint:
                 state_dict = checkpoint["model_state_dict"]
                 latent_dim = checkpoint.get("latent_dim", 64)
+                stats_dim = checkpoint.get("stats_dim", 8)
                 # Use defaults for other params since training script doesn't save them
                 model = cls(
                     latent_dim=latent_dim,
                     use_relative_eq_encoder=True,  # Default for V2
                     use_correlations=False,
+                    interaction_type=checkpoint.get("interaction_type", "bilinear"),
+                    use_eq_encoder=checkpoint.get("use_eq_encoder", True),
+                    stats_dim=stats_dim,
                 )
                 model.load_state_dict(state_dict)
                 return model
@@ -758,6 +839,9 @@ if TORCH_AVAILABLE:
                 max_terms=checkpoint.get("max_terms", 50),
                 use_relative_eq_encoder=checkpoint.get("use_relative_eq_encoder", False),
                 use_correlations=checkpoint.get("use_correlations", False),
+                interaction_type=checkpoint.get("interaction_type", "bilinear"),
+                use_eq_encoder=checkpoint.get("use_eq_encoder", True),
+                stats_dim=checkpoint.get("stats_dim", 8),
             )
             model.load_state_dict(checkpoint["state_dict"])
             return model

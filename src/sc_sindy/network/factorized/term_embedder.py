@@ -124,8 +124,16 @@ if TORCH_AVAILABLE:
             # Combine embeddings for each factor
             factor_embeds = []
             for var_idx, power in powers:
-                var_idx = min(var_idx, self.max_vars - 1)
-                power = min(power, self.max_power)
+                if var_idx >= self.max_vars:
+                    raise ValueError(
+                        f"Variable index {var_idx} exceeds max_vars={self.max_vars}. "
+                        f"Increase max_vars or check your library configuration."
+                    )
+                if power > self.max_power:
+                    raise ValueError(
+                        f"Power {power} exceeds max_power={self.max_power}. "
+                        f"Increase max_power or reduce poly_order."
+                    )
 
                 var_e = self.var_embed(torch.tensor(var_idx, device=self.const_embed.device))
                 pow_e = self.power_embed(torch.tensor(power, device=self.const_embed.device))
@@ -261,8 +269,16 @@ if TORCH_AVAILABLE:
 
             factor_embeds = []
             for var_idx, power in powers:
-                var_idx = min(var_idx, self.max_vars - 1)
-                power = min(power, self.max_power)
+                if var_idx >= self.max_vars:
+                    raise ValueError(
+                        f"Variable index {var_idx} exceeds max_vars={self.max_vars}. "
+                        f"Increase max_vars or check your library configuration."
+                    )
+                if power > self.max_power:
+                    raise ValueError(
+                        f"Power {power} exceeds max_power={self.max_power}. "
+                        f"Increase max_power or reduce poly_order."
+                    )
 
                 var_e = self.var_embed(torch.tensor(var_idx, device=self.const_embed.device))
                 pow_e = self.power_encoding[power]
