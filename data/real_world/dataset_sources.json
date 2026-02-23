@@ -1,0 +1,119 @@
+{
+  "datasets": {
+    "lynx_hare": {
+      "name": "Hudson Bay Lynx-Hare Population Data",
+      "description": "Annual fur trading records from Hudson Bay Company showing predator-prey dynamics",
+      "years": "1900-1920 (subset) or 1845-1935 (full)",
+      "n_samples": 21,
+      "dimensions": 2,
+      "variables": ["hare_population", "lynx_population"],
+      "expected_dynamics": "Lotka-Volterra predator-prey",
+      "expected_terms": ["x", "y", "xy"],
+      "source_file": "../raw/lynx_hare.csv",
+      "citation": {
+        "paper": "Discovering governing equations from data by sparse identification of nonlinear dynamical systems",
+        "authors": "Brunton, S. L., Proctor, J. L., & Kutz, J. N.",
+        "year": 2016,
+        "venue": "Proceedings of the National Academy of Sciences",
+        "volume": "113(15)",
+        "pages": "3932-3937",
+        "doi": "10.1073/pnas.1517384113",
+        "bibtex_key": "brunton2016discovering"
+      },
+      "also_used_by": [
+        {
+          "paper": "Ensemble-SINDy: Robust sparse model discovery in the low-data, high-noise limit",
+          "authors": "Fasel, U., Kutz, J. N., Brunton, B. W., & Brunton, S. L.",
+          "year": 2022,
+          "venue": "Proceedings of the Royal Society A",
+          "doi": "10.1098/rspa.2021.0904"
+        },
+        {
+          "paper": "Weak SINDy: Galerkin-based data-driven model selection",
+          "authors": "Messenger, D. A., & Bortz, D. M.",
+          "year": 2021,
+          "venue": "Multiscale Modeling & Simulation",
+          "doi": "10.1137/20M1343166"
+        }
+      ],
+      "original_source": "Hudson Bay Company fur trading records (historical archive)",
+      "challenges": ["sparse_data", "annual_resolution", "measurement_noise"]
+    },
+    "pendulum_real_video": {
+      "name": "Real Pendulum Video Data",
+      "description": "14-second video recording of laboratory pendulum, tracked via computer vision",
+      "n_samples": 390,
+      "dimensions": 2,
+      "variables": ["angle", "angular_velocity"],
+      "expected_dynamics": "Damped simple pendulum",
+      "expected_terms": ["x", "y", "sin(x)"],
+      "expected_constants": {"g": 9.81},
+      "discovered_g": 9.876,
+      "source_url": "https://drive.google.com/file/d/1TilvyZg6VNNZ3CynO07BvBvsUXLRSaXh/view",
+      "github_repo": "https://github.com/gaoliyao/BayesianSindyAutoencoder",
+      "citation": {
+        "paper": "Bayesian autoencoders for data-driven discovery of coordinates, governing equations and fundamental constants",
+        "authors": "Gao, L. M., & Kutz, J. N.",
+        "year": 2024,
+        "venue": "Proceedings of the Royal Society A",
+        "volume": "480(2286)",
+        "pages": "20230506",
+        "doi": "10.1098/rspa.2023.0506",
+        "bibtex_key": "gao2024bayesian"
+      },
+      "challenges": ["vision_tracking_noise", "nonlinear_sin_term", "short_duration"]
+    },
+    "oscillator_video": {
+      "name": "Paint Can Oscillator Video",
+      "description": "Video tracking of bouncing paint can exhibiting damped harmonic motion",
+      "n_samples": 425,
+      "dimensions": 2,
+      "variables": ["x_position", "y_position"],
+      "expected_dynamics": "Damped harmonic oscillator (separate x and y)",
+      "expected_terms": ["x", "y", "x^2", "y^2"],
+      "github_repo": "https://github.com/bstollnitz/sindy/tree/main/sindy/oscillator-pysindy",
+      "blog_post": "https://bea.stollnitz.com/blog/oscillator-pysindy/",
+      "citation": {
+        "paper": "Using PySINDy to discover equations from experimental data (blog post)",
+        "authors": "Stollnitz, B.",
+        "year": 2023,
+        "venue": "Personal blog / GitHub",
+        "url": "https://bea.stollnitz.com/blog/oscillator-pysindy/",
+        "bibtex_key": "stollnitz2023pysindy"
+      },
+      "challenges": ["vision_tracking_noise", "2d_coupled_motion", "damping"]
+    },
+    "double_pendulum": {
+      "name": "Double Pendulum Chaotic Dynamics",
+      "description": "Synthetic or video-tracked double pendulum exhibiting chaotic behavior",
+      "n_samples": "variable (1000-10000)",
+      "dimensions": 4,
+      "variables": ["theta1", "theta2", "omega1", "omega2"],
+      "expected_dynamics": "Coupled nonlinear oscillator with chaos",
+      "expected_terms": ["sin(theta1)", "sin(theta2)", "sin(theta1-theta2)", "omega1*omega2"],
+      "generation": "ODE integration with known equations",
+      "citation": {
+        "paper": "Classical Mechanics (textbook)",
+        "authors": "Goldstein, H.",
+        "year": 1980,
+        "venue": "Addison-Wesley",
+        "bibtex_key": "goldstein1980classical"
+      },
+      "also_used_by": [
+        {
+          "paper": "Data-driven discovery of coordinates and governing equations",
+          "authors": "Champion, K., Lusch, B., Kutz, J. N., & Brunton, S. L.",
+          "year": 2019,
+          "venue": "PNAS",
+          "doi": "10.1073/pnas.1906995116"
+        }
+      ],
+      "challenges": ["chaos", "high_dimensional", "coupled_nonlinearity"]
+    }
+  },
+  "metadata": {
+    "created": "2026-02-23",
+    "purpose": "Track real-world datasets for SC-SINDy prefilter evaluation",
+    "evaluation_goal": "Show SC-SINDy improves upon other SINDy methods when used as prefilter"
+  }
+}

@@ -1,0 +1,5033 @@
+{
+  "timestamp": "2026-02-23T10:37:12.677338",
+  "config": {
+    "model": "models/factorized/factorized_model.pt",
+    "n_trials": 10,
+    "datasets": [
+      "lynx_hare",
+      "pendulum",
+      "oscillator",
+      "double_pendulum"
+    ]
+  },
+  "citations": {
+    "lynx_hare": {
+      "bibtex": "@article{brunton2016discovering,\n  title={Discovering governing equations from data by sparse identification of nonlinear dynamical systems},\n  author={Brunton, Steven L and Proctor, Joshua L and Kutz, J Nathan},\n  journal={Proceedings of the National Academy of Sciences},\n  volume={113},\n  number={15},\n  pages={3932--3937},\n  year={2016},\n  doi={10.1073/pnas.1517384113}\n}",
+      "text": "Brunton, S. L., Proctor, J. L., & Kutz, J. N. (2016). Discovering governing equations from data by sparse identification of nonlinear dynamical systems. PNAS, 113(15), 3932-3937.",
+      "also_used": [
+        "Fasel et al. (2022) E-SINDy, Proc. Royal Soc. A",
+        "Messenger & Bortz (2021) Weak-SINDy, Multiscale Model. Simul."
+      ]
+    },
+    "pendulum_real": {
+      "bibtex": "@article{gao2024bayesian,\n  title={Bayesian autoencoders for data-driven discovery of coordinates, governing equations and fundamental constants},\n  author={Gao, Liyao Mars and Kutz, J Nathan},\n  journal={Proceedings of the Royal Society A},\n  volume={480},\n  number={2286},\n  pages={20230506},\n  year={2024},\n  doi={10.1098/rspa.2023.0506}\n}",
+      "text": "Gao, L. M., & Kutz, J. N. (2024). Bayesian autoencoders for data-driven discovery of coordinates, governing equations and fundamental constants. Proc. Royal Soc. A, 480(2286), 20230506."
+    },
+    "oscillator_video": {
+      "bibtex": "@misc{stollnitz2023pysindy,\n  title={Using PySINDy to discover equations from experimental data},\n  author={Stollnitz, Bea},\n  year={2023},\n  url={https://bea.stollnitz.com/blog/oscillator-pysindy/}\n}",
+      "text": "Stollnitz, B. (2023). Using PySINDy to discover equations from experimental data. https://bea.stollnitz.com/blog/oscillator-pysindy/"
+    },
+    "double_pendulum": {
+      "bibtex": "@article{champion2019data,\n  title={Data-driven discovery of coordinates and governing equations},\n  author={Champion, Kathleen and Lusch, Bethany and Kutz, J Nathan and Brunton, Steven L},\n  journal={Proceedings of the National Academy of Sciences},\n  volume={116},\n  number={45},\n  pages={22445--22451},\n  year={2019},\n  doi={10.1073/pnas.1906995116}\n}",
+      "text": "Champion, K., Lusch, B., Kutz, J. N., & Brunton, S. L. (2019). Data-driven discovery of coordinates and governing equations. PNAS, 116(45), 22445-22451."
+    }
+  },
+  "results": {
+    "lynx_hare": {
+      "dataset": "lynx_hare",
+      "metadata": {
+        "name": "Lynx-Hare Population",
+        "n_samples": 21,
+        "n_vars": 2,
+        "dt": 1.0,
+        "variable_names": [
+          "Hare",
+          "Lynx"
+        ],
+        "expected_dynamics": "Lotka-Volterra predator-prey",
+        "expected_terms": [
+          "x",
+          "y",
+          "xy"
+        ],
+        "normalization": {
+          "mean": [
+            34080.95238095238,
+            20166.666666666668
+          ],
+          "std": [
+            20897.906458089667,
+            16254.591536908763
+          ]
+        },
+        "citation": {
+          "bibtex": "@article{brunton2016discovering,\n  title={Discovering governing equations from data by sparse identification of nonlinear dynamical systems},\n  author={Brunton, Steven L and Proctor, Joshua L and Kutz, J Nathan},\n  journal={Proceedings of the National Academy of Sciences},\n  volume={113},\n  number={15},\n  pages={3932--3937},\n  year={2016},\n  doi={10.1073/pnas.1517384113}\n}",
+          "text": "Brunton, S. L., Proctor, J. L., & Kutz, J. N. (2016). Discovering governing equations from data by sparse identification of nonlinear dynamical systems. PNAS, 113(15), 3932-3937.",
+          "also_used": [
+            "Fasel et al. (2022) E-SINDy, Proc. Royal Soc. A",
+            "Messenger & Bortz (2021) Weak-SINDy, Multiscale Model. Simul."
+          ]
+        }
+      },
+      "methods": {
+        "STLSQ": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 0.8559226989746094
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 0.42128562927246094
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 0.4169940948486328
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 0.4138946533203125
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 0.40912628173828125
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 0.40984153747558594
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 0.408172607421875
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 0.4100799560546875
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 0.6639957427978516
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 0.5037784576416016
+              }
+            ],
+            "mean_f1": 0.5454545454545453,
+            "std_f1": 1.1102230246251565e-16,
+            "mean_precision": 0.375,
+            "mean_recall": 1.0,
+            "mean_time_ms": 0.49130916595458984
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.31113624572753906
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.29015541076660156
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.3399848937988281
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.2868175506591797
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.2818107604980469
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.28204917907714844
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.28014183044433594
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.28014183044433594
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.31375885009765625
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.3058910369873047
+              }
+            ],
+            "mean_f1": 0.8,
+            "std_f1": 0.0,
+            "mean_precision": 1.0,
+            "mean_recall": 0.6666666666666667,
+            "mean_time_ms": 0.29718875885009766
+          },
+          "improvement_pct": 46.666666666666714
+        },
+        "SR3": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "predicted_terms": [
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 5,
+                "n_expected": 3,
+                "time_ms": 2.3641586303710938
+              },
+              {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "predicted_terms": [
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 5,
+                "n_expected": 3,
+                "time_ms": 1.6901493072509766
+              },
+              {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "predicted_terms": [
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 5,
+                "n_expected": 3,
+                "time_ms": 2.38800048828125
+              },
+              {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "predicted_terms": [
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 5,
+                "n_expected": 3,
+                "time_ms": 1.7590522766113281
+              },
+              {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "predicted_terms": [
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 5,
+                "n_expected": 3,
+                "time_ms": 1.9178390502929688
+              },
+              {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "predicted_terms": [
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 5,
+                "n_expected": 3,
+                "time_ms": 1.8167495727539062
+              },
+              {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "predicted_terms": [
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 5,
+                "n_expected": 3,
+                "time_ms": 2.4559497833251953
+              },
+              {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "predicted_terms": [
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 5,
+                "n_expected": 3,
+                "time_ms": 1.8858909606933594
+              },
+              {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "predicted_terms": [
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 5,
+                "n_expected": 3,
+                "time_ms": 1.628875732421875
+              },
+              {
+                "precision": 0.6,
+                "recall": 1.0,
+                "f1": 0.7499999999999999,
+                "predicted_terms": [
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 5,
+                "n_expected": 3,
+                "time_ms": 1.9869804382324219
+              }
+            ],
+            "mean_f1": 0.7499999999999999,
+            "std_f1": 0.0,
+            "mean_precision": 0.5999999999999999,
+            "mean_recall": 1.0,
+            "mean_time_ms": 1.9893646240234375
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.3199577331542969
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.4131793975830078
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.32401084899902344
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.3237724304199219
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.3719329833984375
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.31495094299316406
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.33593177795410156
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.31304359436035156
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.3337860107421875
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.30803680419921875
+              }
+            ],
+            "mean_f1": 0.8,
+            "std_f1": 0.0,
+            "mean_precision": 1.0,
+            "mean_recall": 0.6666666666666667,
+            "mean_time_ms": 0.3358602523803711
+          },
+          "improvement_pct": 6.666666666666689
+        },
+        "E-SINDy": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.5,
+                "recall": 1.0,
+                "f1": 0.6666666666666666,
+                "predicted_terms": [
+                  "yyy",
+                  "x",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 6,
+                "n_expected": 3,
+                "time_ms": 37.02497482299805
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 38.41209411621094
+              },
+              {
+                "precision": 0.42857142857142855,
+                "recall": 1.0,
+                "f1": 0.6,
+                "predicted_terms": [
+                  "yyy",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 7,
+                "n_expected": 3,
+                "time_ms": 39.49284553527832
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "yyy",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xx",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 38.24305534362793
+              },
+              {
+                "precision": 0.5,
+                "recall": 1.0,
+                "f1": 0.6666666666666666,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 6,
+                "n_expected": 3,
+                "time_ms": 36.895036697387695
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 67.01779365539551
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 50.83489418029785
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 61.75684928894043
+              },
+              {
+                "precision": 0.375,
+                "recall": 1.0,
+                "f1": 0.5454545454545454,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 8,
+                "n_expected": 3,
+                "time_ms": 39.34907913208008
+              },
+              {
+                "precision": 0.42857142857142855,
+                "recall": 1.0,
+                "f1": 0.6,
+                "predicted_terms": [
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xxx",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 7,
+                "n_expected": 3,
+                "time_ms": 38.35415840148926
+              }
+            ],
+            "mean_f1": 0.5806060606060605,
+            "std_f1": 0.04793629074735803,
+            "mean_precision": 0.41071428571428575,
+            "mean_recall": 1.0,
+            "mean_time_ms": 44.738078117370605
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.3211498260498047
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.5011558532714844
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.34809112548828125
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.4019737243652344
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.61798095703125
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.31185150146484375
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.32711029052734375
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.37097930908203125
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.4107952117919922
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.354766845703125
+              }
+            ],
+            "mean_f1": 0.8,
+            "std_f1": 0.0,
+            "mean_precision": 1.0,
+            "mean_recall": 0.6666666666666667,
+            "mean_time_ms": 0.39658546447753906
+          },
+          "improvement_pct": 37.78705636743219
+        },
+        "Weak-SINDy": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 9,
+                "n_expected": 3,
+                "time_ms": 3.2770633697509766
+              },
+              {
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 9,
+                "n_expected": 3,
+                "time_ms": 2.830028533935547
+              },
+              {
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 9,
+                "n_expected": 3,
+                "time_ms": 6.145238876342773
+              },
+              {
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 9,
+                "n_expected": 3,
+                "time_ms": 9.235858917236328
+              },
+              {
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 9,
+                "n_expected": 3,
+                "time_ms": 7.910966873168945
+              },
+              {
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 9,
+                "n_expected": 3,
+                "time_ms": 5.291223526000977
+              },
+              {
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 9,
+                "n_expected": 3,
+                "time_ms": 9.092092514038086
+              },
+              {
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 9,
+                "n_expected": 3,
+                "time_ms": 6.112098693847656
+              },
+              {
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 9,
+                "n_expected": 3,
+                "time_ms": 4.83393669128418
+              },
+              {
+                "precision": 0.3333333333333333,
+                "recall": 1.0,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "1",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 9,
+                "n_expected": 3,
+                "time_ms": 4.429817199707031
+              }
+            ],
+            "mean_f1": 0.5,
+            "std_f1": 0.0,
+            "mean_precision": 0.33333333333333337,
+            "mean_recall": 1.0,
+            "mean_time_ms": 5.91583251953125
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.33473968505859375
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.4050731658935547
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.3440380096435547
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 1.1570453643798828
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.3459453582763672
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.4029273986816406
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.3380775451660156
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.4222393035888672
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.8440017700195312
+              },
+              {
+                "precision": 1.0,
+                "recall": 0.6666666666666666,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y",
+                  "xy"
+                ],
+                "n_predicted": 2,
+                "n_expected": 3,
+                "time_ms": 0.4191398620605469
+              }
+            ],
+            "mean_f1": 0.8,
+            "std_f1": 0.0,
+            "mean_precision": 1.0,
+            "mean_recall": 0.6666666666666667,
+            "mean_time_ms": 0.5013227462768555
+          },
+          "improvement_pct": 60.00000000000001
+        }
+      }
+    },
+    "pendulum": {
+      "dataset": "pendulum",
+      "metadata": {
+        "name": "Pendulum (Synthetic)",
+        "n_samples": 390,
+        "n_vars": 2,
+        "dt": 0.03598971722365039,
+        "variable_names": [
+          "theta",
+          "omega"
+        ],
+        "expected_dynamics": "Damped simple pendulum",
+        "expected_terms": [
+          "y",
+          "sin(x)"
+        ],
+        "is_real_data": false,
+        "citation": {
+          "bibtex": "@article{gao2024bayesian,\n  title={Bayesian autoencoders for data-driven discovery of coordinates, governing equations and fundamental constants},\n  author={Gao, Liyao Mars and Kutz, J Nathan},\n  journal={Proceedings of the Royal Society A},\n  volume={480},\n  number={2286},\n  pages={20230506},\n  year={2024},\n  doi={10.1098/rspa.2023.0506}\n}",
+          "text": "Gao, L. M., & Kutz, J. N. (2024). Bayesian autoencoders for data-driven discovery of coordinates, governing equations and fundamental constants. Proc. Royal Soc. A, 480(2286), 20230506."
+        }
+      },
+      "methods": {
+        "STLSQ": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 0.7281303405761719
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 0.7801055908203125
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 3.287076950073242
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 1.2018680572509766
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 0.72479248046875
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 42.359113693237305
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 0.7872581481933594
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 1.447916030883789
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 9.634971618652344
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 0.6668567657470703
+              }
+            ],
+            "mean_f1": 0.25,
+            "std_f1": 0.0,
+            "mean_precision": 0.16666666666666669,
+            "mean_recall": 0.5,
+            "mean_time_ms": 6.161808967590332
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.3802776336669922
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.36263465881347656
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 2.1772384643554688
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 3.3788681030273438
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 76.36308670043945
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 6.83283805847168
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.38504600524902344
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 1.1718273162841797
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 1.7049312591552734
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.4699230194091797
+              }
+            ],
+            "mean_f1": 0.5,
+            "std_f1": 0.0,
+            "mean_precision": 0.5,
+            "mean_recall": 0.5,
+            "mean_time_ms": 9.322667121887207
+          },
+          "improvement_pct": 100.0
+        },
+        "SR3": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 8.14199447631836
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 13.997077941894531
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 4.086971282958984
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 4.614830017089844
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 4.526853561401367
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 3.6649703979492188
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 6.695985794067383
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 3.1900405883789062
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 4.155158996582031
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 3.809213638305664
+              }
+            ],
+            "mean_f1": 0.2857142857142857,
+            "std_f1": 5.551115123125783e-17,
+            "mean_precision": 0.2,
+            "mean_recall": 0.5,
+            "mean_time_ms": 5.688309669494629
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 5.693912506103516
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 1.7719268798828125
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.6537437438964844
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.96893310546875
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.5340576171875
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.4100799560546875
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.8358955383300781
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 4.891872406005859
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.4317760467529297
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.8668899536132812
+              }
+            ],
+            "mean_f1": 0.5,
+            "std_f1": 0.0,
+            "mean_precision": 0.5,
+            "mean_recall": 0.5,
+            "mean_time_ms": 1.7059087753295898
+          },
+          "improvement_pct": 75.00000000000001
+        },
+        "E-SINDy": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.14285714285714285,
+                "recall": 0.5,
+                "f1": 0.22222222222222224,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy",
+                  "xy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 7,
+                "n_expected": 2,
+                "time_ms": 79.81610298156738
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 52.82878875732422
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 90.34109115600586
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 415.9269332885742
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 49.158334732055664
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 96.87113761901855
+              },
+              {
+                "precision": 0.14285714285714285,
+                "recall": 0.5,
+                "f1": 0.22222222222222224,
+                "predicted_terms": [
+                  "xxy",
+                  "xx",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 7,
+                "n_expected": 2,
+                "time_ms": 180.61280250549316
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 68.84503364562988
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 107.13982582092285
+              },
+              {
+                "precision": 0.2,
+                "recall": 0.5,
+                "f1": 0.28571428571428575,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 5,
+                "n_expected": 2,
+                "time_ms": 45.133113861083984
+              }
+            ],
+            "mean_f1": 0.2658730158730159,
+            "std_f1": 0.02583939777158685,
+            "mean_precision": 0.1819047619047619,
+            "mean_recall": 0.5,
+            "mean_time_ms": 118.66731643676758
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.4119873046875
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.7600784301757812
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.43010711669921875
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 2.969026565551758
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.4031658172607422
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 8.643865585327148
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.41604042053222656
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.41866302490234375
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.9391307830810547
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.41103363037109375
+              }
+            ],
+            "mean_f1": 0.5,
+            "std_f1": 0.0,
+            "mean_precision": 0.5,
+            "mean_recall": 0.5,
+            "mean_time_ms": 1.5803098678588867
+          },
+          "improvement_pct": 88.05970149253727
+        },
+        "Weak-SINDy": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 2.9039382934570312
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 2.3081302642822266
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 2.2580623626708984
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 2.9709339141845703
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 4.75001335144043
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 5.012989044189453
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 3.790140151977539
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 5.932092666625977
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 2.933025360107422
+              },
+              {
+                "precision": 0.16666666666666666,
+                "recall": 0.5,
+                "f1": 0.25,
+                "predicted_terms": [
+                  "xxy",
+                  "x",
+                  "y",
+                  "xxx",
+                  "xx",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 6,
+                "n_expected": 2,
+                "time_ms": 4.339933395385742
+              }
+            ],
+            "mean_f1": 0.25,
+            "std_f1": 0.0,
+            "mean_precision": 0.16666666666666669,
+            "mean_recall": 0.5,
+            "mean_time_ms": 3.719925880432129
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.37407875061035156
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.3762245178222656
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.823974609375
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.3991127014160156
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 1.1179447174072266
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.6368160247802734
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.40793418884277344
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 1.0709762573242188
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 1.0149478912353516
+              },
+              {
+                "precision": 0.5,
+                "recall": 0.5,
+                "f1": 0.5,
+                "predicted_terms": [
+                  "y",
+                  "x"
+                ],
+                "expected_terms": [
+                  "y",
+                  "sin(x)"
+                ],
+                "n_predicted": 2,
+                "n_expected": 2,
+                "time_ms": 0.5679130554199219
+              }
+            ],
+            "mean_f1": 0.5,
+            "std_f1": 0.0,
+            "mean_precision": 0.5,
+            "mean_recall": 0.5,
+            "mean_time_ms": 0.6789922714233398
+          },
+          "improvement_pct": 100.0
+        }
+      }
+    },
+    "oscillator": {
+      "dataset": "oscillator",
+      "metadata": {
+        "name": "Oscillator (Synthetic)",
+        "n_samples": 425,
+        "n_vars": 2,
+        "dt": 0.0330188679245283,
+        "variable_names": [
+          "x",
+          "y"
+        ],
+        "expected_dynamics": "Damped harmonic oscillator",
+        "expected_terms": [
+          "x",
+          "y"
+        ],
+        "is_real_data": false,
+        "citation": {
+          "bibtex": "@misc{stollnitz2023pysindy,\n  title={Using PySINDy to discover equations from experimental data},\n  author={Stollnitz, Bea},\n  year={2023},\n  url={https://bea.stollnitz.com/blog/oscillator-pysindy/}\n}",
+          "text": "Stollnitz, B. (2023). Using PySINDy to discover equations from experimental data. https://bea.stollnitz.com/blog/oscillator-pysindy/"
+        }
+      },
+      "methods": {
+        "STLSQ": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.2011528015136719
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.3589859008789062
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.1739730834960938
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.425027847290039
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.2171268463134766
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.1000633239746094
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.7659664154052734
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.2230873107910156
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.096963882446289
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.3689994812011719
+              }
+            ],
+            "mean_f1": 0.36363636363636365,
+            "std_f1": 5.551115123125783e-17,
+            "mean_precision": 0.22222222222222224,
+            "mean_recall": 1.0,
+            "mean_time_ms": 1.2931346893310547
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.6940364837646484
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.45108795166015625
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 1.7368793487548828
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5948543548583984
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.8966922760009766
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.4277229309082031
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.431060791015625
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5059242248535156
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.42700767517089844
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.9100437164306641
+              }
+            ],
+            "mean_f1": 0.8,
+            "std_f1": 0.0,
+            "mean_precision": 0.6666666666666667,
+            "mean_recall": 1.0,
+            "mean_time_ms": 0.7075309753417969
+          },
+          "improvement_pct": 120.0
+        },
+        "SR3": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.542257308959961
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.0020008087158203
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.8731822967529297
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 4.5490264892578125
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 3.195047378540039
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.165079116821289
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.235889434814453
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.3670196533203125
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.0470619201660156
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 1.9080638885498047
+              }
+            ],
+            "mean_f1": 0.36363636363636365,
+            "std_f1": 5.551115123125783e-17,
+            "mean_precision": 0.22222222222222224,
+            "mean_recall": 1.0,
+            "mean_time_ms": 2.5884628295898438
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.4668235778808594
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.4401206970214844
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.45609474182128906
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.6237030029296875
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.46515464782714844
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5099773406982422
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5056858062744141
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.4489421844482422
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.45108795166015625
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.44274330139160156
+              }
+            ],
+            "mean_f1": 0.8,
+            "std_f1": 0.0,
+            "mean_precision": 0.6666666666666667,
+            "mean_recall": 1.0,
+            "mean_time_ms": 0.4810333251953125
+          },
+          "improvement_pct": 120.0
+        },
+        "E-SINDy": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 46.95868492126465
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 43.52283477783203
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 46.09990119934082
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 47.20735549926758
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 44.02279853820801
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 51.57899856567383
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 50.26507377624512
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 41.41592979431152
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 38.207054138183594
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 40.0388240814209
+              }
+            ],
+            "mean_f1": 0.36363636363636365,
+            "std_f1": 5.551115123125783e-17,
+            "mean_precision": 0.22222222222222224,
+            "mean_recall": 1.0,
+            "mean_time_ms": 44.931745529174805
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5178451538085938
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.4661083221435547
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5350112915039062
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5478858947753906
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.6570816040039062
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.46706199645996094
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.6039142608642578
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5202293395996094
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.4868507385253906
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.46896934509277344
+              }
+            ],
+            "mean_f1": 0.8,
+            "std_f1": 0.0,
+            "mean_precision": 0.6666666666666667,
+            "mean_recall": 1.0,
+            "mean_time_ms": 0.5270957946777344
+          },
+          "improvement_pct": 120.0
+        },
+        "Weak-SINDy": {
+          "alone": {
+            "runs": [
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.998828887939453
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.630949020385742
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 3.439188003540039
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.763986587524414
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.6988983154296875
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.321004867553711
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.6578903198242188
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 5.975961685180664
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 3.0400753021240234
+              },
+              {
+                "precision": 0.2222222222222222,
+                "recall": 1.0,
+                "f1": 0.3636363636363636,
+                "predicted_terms": [
+                  "yyy",
+                  "xxy",
+                  "xx",
+                  "x",
+                  "yy",
+                  "y",
+                  "xxx",
+                  "xy",
+                  "xyy"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 9,
+                "n_expected": 2,
+                "time_ms": 2.8922557830810547
+              }
+            ],
+            "mean_f1": 0.36363636363636365,
+            "std_f1": 5.551115123125783e-17,
+            "mean_precision": 0.22222222222222224,
+            "mean_recall": 1.0,
+            "mean_time_ms": 3.141903877258301
+          },
+          "with_scsindy": {
+            "runs": [
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.45108795166015625
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.4360675811767578
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5271434783935547
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.49686431884765625
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5283355712890625
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.47016143798828125
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.48613548278808594
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.46372413635253906
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.5171298980712891
+              },
+              {
+                "precision": 0.6666666666666666,
+                "recall": 1.0,
+                "f1": 0.8,
+                "predicted_terms": [
+                  "y",
+                  "x",
+                  "xxx"
+                ],
+                "expected_terms": [
+                  "x",
+                  "y"
+                ],
+                "n_predicted": 3,
+                "n_expected": 2,
+                "time_ms": 0.4260540008544922
+              }
+            ],
+            "mean_f1": 0.8,
+            "std_f1": 0.0,
+            "mean_precision": 0.6666666666666667,
+            "mean_recall": 1.0,
+            "mean_time_ms": 0.4802703857421875
+          },
+          "improvement_pct": 120.0
+        }
+      }
+    },
+    "double_pendulum": {
+      "dataset": "double_pendulum",
+      "metadata": {
+        "name": "Double Pendulum (Chaotic)",
+        "n_samples": 2000,
+        "n_vars": 4,
+        "dt": 0.010005002501250625,
+        "variable_names": [
+          "theta1",
+          "theta2",
+          "omega1",
+          "omega2"
+        ],
+        "expected_dynamics": "Coupled nonlinear oscillator",
+        "is_chaotic": true,
+        "citation": {
+          "bibtex": "@article{champion2019data,\n  title={Data-driven discovery of coordinates and governing equations},\n  author={Champion, Kathleen and Lusch, Bethany and Kutz, J Nathan and Brunton, Steven L},\n  journal={Proceedings of the National Academy of Sciences},\n  volume={116},\n  number={45},\n  pages={22445--22451},\n  year={2019},\n  doi={10.1073/pnas.1906995116}\n}",
+          "text": "Champion, K., Lusch, B., Kutz, J. N., & Brunton, S. L. (2019). Data-driven discovery of coordinates and governing equations. PNAS, 116(45), 22445-22451."
+        }
+      },
+      "methods": {
+        "STLSQ": {
+          "alone": {
+            "runs": []
+          },
+          "with_scsindy": {
+            "runs": []
+          }
+        },
+        "SR3": {
+          "alone": {
+            "runs": []
+          },
+          "with_scsindy": {
+            "runs": []
+          }
+        },
+        "E-SINDy": {
+          "alone": {
+            "runs": []
+          },
+          "with_scsindy": {
+            "runs": []
+          }
+        },
+        "Weak-SINDy": {
+          "alone": {
+            "runs": []
+          },
+          "with_scsindy": {
+            "runs": []
+          }
+        }
+      }
+    }
+  }
+}
