@@ -36,6 +36,13 @@ from .structure_constrained import (
     sindy_structure_constrained,
     sindy_structure_constrained_soft,
 )
+from .sindy_tuned import (
+    cross_validate_threshold,
+    sindy_tuned,
+    sindy_with_class_threshold,
+    get_system_class_threshold,
+    DEFAULT_THRESHOLDS,
+)
 
 __all__ = [
     # Standard SINDy
@@ -63,4 +70,10 @@ __all__ = [
     "build_library_2d",
     "build_library_3d",
     "build_library_nd",
+    # Tuned SINDy (cross-validated threshold)
+    "sindy_tuned",
+    "cross_validate_threshold",
+    "sindy_with_class_threshold",
+    "get_system_class_threshold",
+    "DEFAULT_THRESHOLDS",
 ]
